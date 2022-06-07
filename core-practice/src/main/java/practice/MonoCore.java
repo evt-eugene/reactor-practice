@@ -44,6 +44,9 @@ public class MonoCore {
         println("\nfromCompletableFuture:");
         fromCompletableFuture();
 
+        println("\nmonoInDifferentThread:");
+        monoInDifferentThread();
+
         println("\nmono practice finished:");
     }
 
@@ -110,5 +113,22 @@ public class MonoCore {
     private void fromCompletableFuture() {
         var future = CompletableFuture.completedFuture("fooBar");
         Mono.fromFuture(future).subscribe(Out::println);
+    }
+
+    private void monoInDifferentThread() {
+        final var mono = Mono.just("hello, world");
+
+        var helperThread = new Thread(() -> {
+            mono
+                    .map(v -> v + ", in mapping thread " + Thread.currentThread().getName())
+                    .subscribe(v -> println("Got [" + v + "] in subscription thread " + Thread.currentThread().getName()));
+        }, "customHelperThread");
+        helperThread.start();
+
+        try {
+            helperThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
