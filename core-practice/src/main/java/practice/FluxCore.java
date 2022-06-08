@@ -113,20 +113,20 @@ public class FluxCore {
         println("\nsyncGenerate:");
         syncGenerate();
 
-        //println("\ncreateWithDropStrategy: drops values if producer is faster than consumer and there is a queue overflow");
-        //createWithDropStrategy();
+        println("\ncreateWithDropStrategy: drops values if producer is faster than consumer and there is a queue overflow");
+        createWithDropStrategy();
 
-        //println("\ncreateWithLatestStrategy: takes latest value if producer is faster than consumer and there is a queue overflow");
-        //createWithLatestStrategy();
+        println("\ncreateWithLatestStrategy: takes latest value if producer is faster than consumer and there is a queue overflow");
+        createWithLatestStrategy();
 
-        //println("\ncreateWithErrorStrategy: throw an error if producer is faster than consumer and there is a queue overflow");
-        //createWithErrorStrategy();
+        println("\ncreateWithErrorStrategy: throw an error if producer is faster than consumer and there is a queue overflow");
+        createWithErrorStrategy();
 
-        //println("\ncreateWithIgnoreStrategy: continue to produce but stop consume and throw an error if producer is faster than consumer and there is a queue overflow");
-        //createWithIgnoreStrategy();
+        println("\ncreateWithIgnoreStrategy: continue to produce but stop consume and throw an error if producer is faster than consumer and there is a queue overflow");
+        createWithIgnoreStrategy();
 
-        //println("\ncreateWithBufferStrategy: buffer values if producer is faster than consumer");
-        //createWithBufferStrategy();
+        println("\ncreateWithBufferStrategy: buffer values if producer is faster than consumer");
+        createWithBufferStrategy();
 
         println("\nhybridPushPull:");
         hybridPushPull();
