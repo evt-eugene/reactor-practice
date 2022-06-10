@@ -10,19 +10,23 @@ import reactor.util.retry.Retry;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static practice.Out.errPrintln;
 import static practice.Out.println;
+import static reactor.core.publisher.Sinks.EmitFailureHandler.FAIL_FAST;
 
 public class FluxCore {
 
     public void doPractice() {
+
         println("\nemptyFlux:");
         emptyFlux();
 
@@ -89,8 +93,14 @@ public class FluxCore {
         println("\nblocking repository to flux:");
         blockingRepositoryToFlux();
 
+        println("\nmakeBlockingCall:");
+        makeBlockingCall();
+
         println("\nfluxToBlockingRepository:");
         fluxToBlockingRepository();
+
+        println("\nexponentialBackoff:");
+        exponentialBackoff();
 
         println("\nuseDisposable:");
         useDisposable();
@@ -145,6 +155,45 @@ public class FluxCore {
 
         println("\nonErrorReturn:");
         onErrorReturn();
+
+        println("\ntransform:");
+        transform();
+
+        println("\ntransformDeferred:");
+        transformDeferred();
+
+        println("\nhot publisher just:");
+        hotPublisherJust();
+
+        println("\nhot publisher using sinks:");
+        hotPublisherUsingSinks();
+
+        println("\ncold publisher:");
+        coldPublisher();
+
+        println("\nconnectableFlux:");
+        connectableFlux();
+
+        println("\nautoConnect:");
+        autoConnect();
+
+        println("\ngroupBy:");
+        groupBy();
+
+        println("\nwindows:");
+        windows();
+
+        println("\nbuffer:");
+        buffer();
+
+        println("\nbufferWhile:");
+        bufferWhile();
+
+        println("\nparallel:");
+        useParallel();
+
+        println("\nreplaceSchedulers:");
+        replaceSchedulers();
 
         println("\nflux practice finished:");
     }
@@ -437,51 +486,51 @@ public class FluxCore {
         println("---------------");
 
         var replayAllSink = Sinks.many().replay().<Integer>all();
-        replayAllSink.emitNext(1, Sinks.EmitFailureHandler.FAIL_FAST);
-        replayAllSink.emitNext(2, Sinks.EmitFailureHandler.FAIL_FAST);
-        replayAllSink.emitNext(3, Sinks.EmitFailureHandler.FAIL_FAST);
-        replayAllSink.emitNext(4, Sinks.EmitFailureHandler.FAIL_FAST);
+        replayAllSink.emitNext(1, FAIL_FAST);
+        replayAllSink.emitNext(2, FAIL_FAST);
+        replayAllSink.emitNext(3, FAIL_FAST);
+        replayAllSink.emitNext(4, FAIL_FAST);
         replayAllSink.asFlux().subscribe(i -> println("replay sink value in subscriber 1 is " + i));
-        replayAllSink.emitNext(5, Sinks.EmitFailureHandler.FAIL_FAST);
+        replayAllSink.emitNext(5, FAIL_FAST);
         replayAllSink.asFlux().subscribe(i -> println("replay sink value in subscriber 2 is " + i));
-        replayAllSink.emitNext(6, Sinks.EmitFailureHandler.FAIL_FAST);
+        replayAllSink.emitNext(6, FAIL_FAST);
 
         println("\n  replay limited history Sink:");
         println("---------------");
 
         var replayLimitSink = Sinks.many().replay().<Integer>limit(2);
-        replayLimitSink.emitNext(1, Sinks.EmitFailureHandler.FAIL_FAST);
-        replayLimitSink.emitNext(2, Sinks.EmitFailureHandler.FAIL_FAST);
-        replayLimitSink.emitNext(3, Sinks.EmitFailureHandler.FAIL_FAST);
-        replayLimitSink.emitNext(4, Sinks.EmitFailureHandler.FAIL_FAST);
+        replayLimitSink.emitNext(1, FAIL_FAST);
+        replayLimitSink.emitNext(2, FAIL_FAST);
+        replayLimitSink.emitNext(3, FAIL_FAST);
+        replayLimitSink.emitNext(4, FAIL_FAST);
         replayLimitSink.asFlux().subscribe(i -> println("replay limit sink value in subscriber 1 is " + i));
-        replayLimitSink.emitNext(5, Sinks.EmitFailureHandler.FAIL_FAST);
+        replayLimitSink.emitNext(5, FAIL_FAST);
         replayLimitSink.asFlux().subscribe(i -> println("replay limit sink value in subscriber 2 is " + i));
-        replayLimitSink.emitNext(6, Sinks.EmitFailureHandler.FAIL_FAST);
+        replayLimitSink.emitNext(6, FAIL_FAST);
 
         println("\n  unicast Sink:");
         println("---------------");
 
         var unicastSink = Sinks.many().unicast().onBackpressureBuffer();
-        unicastSink.emitNext(1, Sinks.EmitFailureHandler.FAIL_FAST);
-        unicastSink.emitNext(2, Sinks.EmitFailureHandler.FAIL_FAST);
-        unicastSink.emitNext(3, Sinks.EmitFailureHandler.FAIL_FAST);
-        unicastSink.emitNext(4, Sinks.EmitFailureHandler.FAIL_FAST);
+        unicastSink.emitNext(1, FAIL_FAST);
+        unicastSink.emitNext(2, FAIL_FAST);
+        unicastSink.emitNext(3, FAIL_FAST);
+        unicastSink.emitNext(4, FAIL_FAST);
         unicastSink.asFlux().subscribe(i -> println("unicastSink sink value in subscriber is " + i));
-        unicastSink.emitNext(5, Sinks.EmitFailureHandler.FAIL_FAST);
+        unicastSink.emitNext(5, FAIL_FAST);
 
         println("\n  multicast Sink:");
         println("---------------");
 
         var multicastSink = Sinks.many().multicast().onBackpressureBuffer();
-        multicastSink.emitNext(1, Sinks.EmitFailureHandler.FAIL_FAST);
-        multicastSink.emitNext(2, Sinks.EmitFailureHandler.FAIL_FAST);
-        multicastSink.emitNext(3, Sinks.EmitFailureHandler.FAIL_FAST);
-        multicastSink.emitNext(4, Sinks.EmitFailureHandler.FAIL_FAST);
+        multicastSink.emitNext(1, FAIL_FAST);
+        multicastSink.emitNext(2, FAIL_FAST);
+        multicastSink.emitNext(3, FAIL_FAST);
+        multicastSink.emitNext(4, FAIL_FAST);
         multicastSink.asFlux().subscribe(i -> println("multicast sink value in subscriber 1 is " + i));
-        multicastSink.emitNext(5, Sinks.EmitFailureHandler.FAIL_FAST);
+        multicastSink.emitNext(5, FAIL_FAST);
         multicastSink.asFlux().subscribe(i -> println("multicast sink value in subscriber 2 is " + i));
-        multicastSink.emitNext(6, Sinks.EmitFailureHandler.FAIL_FAST);
+        multicastSink.emitNext(6, FAIL_FAST);
     }
 
     private void zip() {
@@ -524,6 +573,18 @@ public class FluxCore {
         }
     }
 
+    private void makeBlockingCall() {
+        Mono.fromCallable(() -> new BlockingRepository().findAll())
+                .subscribeOn(Schedulers.boundedElastic())
+                .subscribe(Out::println);
+
+        try {
+            Thread.sleep(Duration.ofSeconds(2).toMillis());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void fluxToBlockingRepository() {
         var repository = new BlockingRepository();
 
@@ -554,6 +615,28 @@ public class FluxCore {
             }
 
             println(String.format("Data %s is saved", data));
+        }
+    }
+
+    private void exponentialBackoff() {
+        AtomicInteger errorCount = new AtomicInteger();
+
+        Flux.<String>error(new IllegalStateException("boom"))
+                .doOnError(e -> {
+                    errorCount.incrementAndGet();
+                    println(e + " at " + LocalTime.now());
+                })
+                .retryWhen(
+                        Retry.backoff(3, Duration.ofMillis(100)).jitter(0d)
+                                .doAfterRetry(rs -> println("retried at " + LocalTime.now()))
+                                .onRetryExhaustedThrow((spec, rs) -> rs.failure())
+                )
+                .subscribe(Out::println);
+
+        try {
+            Thread.sleep(Duration.ofSeconds(1).toMillis());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -924,4 +1007,175 @@ public class FluxCore {
             scheduler.dispose();
         }
     }
+
+    private void transform() {
+        Function<Flux<String>, Flux<String>> filterAndMap =
+                (f) -> f.filter(color -> !color.equals("orange"))
+                        .map(String::toUpperCase);
+
+        Flux.just("blue", "green", "orange", "purple")
+                .transform(filterAndMap)
+                .subscribe(v -> println("Value in subscribe: " + v));
+    }
+
+    private void transformDeferred() {
+        var ai = new AtomicInteger();
+
+        Function<Flux<String>, Flux<String>> filterAndMap = v ->
+                ai.incrementAndGet() == 1 ?
+                        v.filter(color -> !color.equals("orange")).map(String::toUpperCase) :
+                        v.filter(color -> !color.equals("purple")).map(String::toUpperCase);
+
+        var flux = Flux.just("blue", "green", "orange", "purple")
+                .transformDeferred(filterAndMap);
+
+        flux.subscribe(v -> println("Value in subscriber 1 : " + v));
+        flux.subscribe(v -> println("Value in subscriber 2 : " + v));
+    }
+
+    private void hotPublisherJust() {
+        var numbersFlux = Flux.just(1, 2, 3);
+
+        numbersFlux.subscribe(n -> println("Value in subscriber1 : " + n));
+        numbersFlux.subscribe(n -> println("Value in subscriber2 : " + n));
+    }
+
+    private void hotPublisherUsingSinks() {
+        var hotSource = Sinks.unsafe().many().multicast().<String>directBestEffort();
+        var hotFlux = hotSource.asFlux().map(String::toUpperCase);
+
+        hotFlux.subscribe(d -> println("Subscriber 1 to Hot Source: " + d));
+
+        hotSource.emitNext("blue", FAIL_FAST);
+        hotSource.tryEmitNext("green").orThrow();
+
+        hotFlux.subscribe(d -> println("Subscriber 2 to Hot Source: " + d));
+
+        hotSource.emitNext("orange", FAIL_FAST);
+        hotSource.emitNext("purple", FAIL_FAST);
+        hotSource.emitComplete(FAIL_FAST);
+    }
+
+    private void coldPublisher() {
+        var rnd = new Random();
+
+        var deferred = Flux.defer(() -> {
+            println("make a new data sequence");
+
+            var i = rnd.nextInt(4);
+
+            return Flux.just("a" + i, "b" + i, "c" + i);
+        });
+
+        deferred.subscribe(n -> println("Value in subscriber1 : " + n));
+        deferred.subscribe(n -> println("Value in subscriber2 : " + n));
+    }
+
+    private void connectableFlux() {
+        var rnd = new Random();
+
+        var source = Flux.defer(() -> {
+                    println("make a new data sequence");
+
+                    var i = rnd.nextInt(4);
+
+                    return Flux.just("a" + i, "b" + i, "c" + i);
+                })
+                .doOnSubscribe(s -> println("subscribed to source"));
+
+        var connectable = source.publish();
+
+        connectable.subscribe(n -> println("Value in subscriber1 : " + n));
+        connectable.subscribe(n -> println("Value in subscriber2 : " + n));
+
+        println("done subscribing");
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        println("will now connect");
+
+        connectable.connect();
+    }
+
+    private void autoConnect() {
+        var rnd = new Random();
+
+        var source = Flux.defer(() -> {
+                    println("make a new data sequence");
+
+                    var i = rnd.nextInt(4);
+
+                    return Flux.just("a" + i, "b" + i, "c" + i);
+                })
+                .doOnSubscribe(s -> println("subscribed to source"));
+
+        var autoConnect = source.publish().autoConnect(2);
+
+        autoConnect.subscribe(n -> println("Value in subscriber1 : " + n));
+        println("subscribed first");
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        println("subscribing second");
+        autoConnect.subscribe(n -> println("Value in subscriber2 : " + n));
+    }
+
+    private void groupBy() {
+        Flux.just(1, 3, 5, 2, 4, 6, 11, 12, 13)
+                .groupBy(i -> i % 2 == 0 ? "even" : "odd")
+                .concatMap(
+                        g -> g.defaultIfEmpty(-1)
+                                .map(String::valueOf)
+                                .startWith(g.key())
+                )
+                .subscribe(Out::println);
+
+    }
+
+    private void windows() {
+        Flux.just(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+                .window(5, 3) //overlapping windows
+                .concatMap(g -> g.defaultIfEmpty(-1))
+                .subscribe(Out::println);
+    }
+
+    private void buffer() {
+        Flux.range(1, 10)
+                .buffer(5, 3)
+                .subscribe(Out::println);
+    }
+
+    private void bufferWhile() {
+        Flux.just(1, 3, 5, 2, 4, 6, 11, 12, 13)
+                .bufferWhile(i -> i % 2 == 0)
+                .subscribe(Out::println);
+    }
+
+    private void useParallel() {
+        Flux.range(1, 10)
+                .parallel(2)
+                .subscribe(i -> println(Thread.currentThread().getName() + " -> " + i));
+    }
+
+    private void replaceSchedulers() {
+        Flux.range(1, 10)
+                .parallel(2)
+                .runOn(Schedulers.parallel())
+                .subscribe(i -> println(Thread.currentThread().getName() + " -> " + i));
+
+        try {
+            Thread.sleep(Duration.ofSeconds(1).toMillis());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
