@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Users</title>
+    <script type="text/javascript">
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const usersUlEl = document.querySelector('ul#users');
+
+        const sse = new EventSource('/users/stream');
+
+        sse.addEventListener("open", () => {
+          console.log("Connection to server opened");
+        });
+
+        sse.addEventListener("message", (e) => {
+          console.log("Event: ", e);
+
+          const user = JSON.parse(e.data);
+
+          const newUserLiEl = document.createElement("li");
+          newUserLiEl.textContent = `userId: ${user.id}, userName: ${user.name}`;
+
+          usersUlEl.appendChild(newUserLiEl);
+        });
+
+        sse.addEventListener("error", (e) => {
+          console.error("An error occurred while attempting to connect:", e);
+        });
+
+      });
+
+    </script>
+  </head>
+  <body>
+    <ul id="users"></ul>
+  </body>
+</html>

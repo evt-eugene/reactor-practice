@@ -16,7 +16,8 @@ public class RouterConfig {
 
   @Bean
   public RouterFunction<ServerResponse> routes(UserHandler handler) {
-    return route(GET("/users").and(accept(MediaType.APPLICATION_JSON)), handler::getAllOrders)
-        .andRoute(GET("/users/{userId}"), handler::getOrderById);
+    return route(GET("/users").and(accept(MediaType.APPLICATION_JSON)), handler::getAllUsers)
+        .andRoute(GET("/users/stream").and(accept(MediaType.TEXT_EVENT_STREAM)), handler::streamAllUsers)
+        .andRoute(GET("/users/{userId}"), handler::getUserById);
   }
 }

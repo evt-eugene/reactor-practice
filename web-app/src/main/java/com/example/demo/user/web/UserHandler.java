@@ -7,7 +7,12 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
+
+import java.time.Duration;
+import java.util.stream.Stream;
 
 @Component
 public class UserHandler {
@@ -37,5 +42,20 @@ public class UserHandler {
         )
         .switchIfEmpty(ServerResponse.notFound().build());
   }
-  
+
+  public Mono<ServerResponse> streamAllUsers(ServerRequest request) {
+    var events = userService.getAllUsers()
+        .flatMap(user ->
+                     Flux.zip(
+                             Flux.interval(Duration.ofSeconds(2)),
+                             Flux.fromStream(Stream.generate(() -> user))
+                         )
+                         .map(Tuple2::getT2)
+        );
+
+    return ServerResponse.ok()
+        .contentType(MediaType.TEXT_EVENT_STREAM)
+        .body(events, User.class);
+
+  }
 }
