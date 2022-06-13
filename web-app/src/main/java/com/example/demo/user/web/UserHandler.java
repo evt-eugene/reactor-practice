@@ -4,12 +4,12 @@ import com.example.demo.user.entity.User;
 import com.example.demo.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
 
 import java.time.Duration;
 import java.util.stream.Stream;
@@ -50,7 +50,16 @@ public class UserHandler {
                              Flux.interval(Duration.ofSeconds(2)),
                              Flux.fromStream(Stream.generate(() -> user))
                          )
-                         .map(Tuple2::getT2)
+                         .map(tuple -> {
+                           var id = tuple.getT1();
+                           var u = tuple.getT2();
+
+                           return ServerSentEvent.builder()
+                               .id(id + "_" + u.getId())
+                               .data(u)
+                               .comment("Server Side Event for User " + u.getName())
+                               .build();
+                         })
         );
 
     return ServerResponse.ok()
