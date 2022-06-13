@@ -19,7 +19,7 @@ public class UserHandler {
     this.userService = userService;
   }
 
-  public Mono<ServerResponse> getAllOrders(ServerRequest request) {
+  public Mono<ServerResponse> getAllUsers(ServerRequest request) {
     var allUsers = userService.getAllUsers();
 
     return ServerResponse.ok()
@@ -27,7 +27,7 @@ public class UserHandler {
         .body(allUsers, User.class);
   }
 
-  public Mono<ServerResponse> getOrderById(ServerRequest request) {
+  public Mono<ServerResponse> getUserById(ServerRequest request) {
     var userId = Long.parseLong(request.pathVariable("userId"));
 
     return userService.findById(userId)
