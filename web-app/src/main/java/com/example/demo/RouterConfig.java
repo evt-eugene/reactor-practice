@@ -17,6 +17,6 @@ public class RouterConfig {
   @Bean
   public RouterFunction<ServerResponse> routes(UserHandler handler) {
     return route(GET("/users").and(accept(MediaType.APPLICATION_JSON)), handler::getAllOrders)
-            .andRoute(GET("/users/{userId}"), handler::getOrderById);
+        .andRoute(GET("/users/{userId}"), handler::getOrderById);
   }
 }

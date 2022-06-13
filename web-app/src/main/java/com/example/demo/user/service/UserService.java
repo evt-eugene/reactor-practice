@@ -10,18 +10,18 @@ import reactor.core.publisher.Mono;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+  @Autowired
+  public UserService(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
-    public Flux<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+  public Flux<User> getAllUsers() {
+    return userRepository.findAll();
+  }
 
-    public Mono<User> findById(Long userId) {
-        return userRepository.findById(userId);
-    }
+  public Mono<User> findById(Long userId) {
+    return userRepository.findById(userId);
+  }
 }

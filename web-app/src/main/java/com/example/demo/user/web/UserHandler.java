@@ -23,19 +23,19 @@ public class UserHandler {
     var allUsers = userService.getAllUsers();
 
     return ServerResponse.ok()
-            .contentType(MediaType.APPLICATION_JSON)
-            .body(allUsers, User.class);
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(allUsers, User.class);
   }
 
   public Mono<ServerResponse> getOrderById(ServerRequest request) {
     var userId = Long.parseLong(request.pathVariable("userId"));
 
     return userService.findById(userId)
-            .flatMap(user -> ServerResponse.ok()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .bodyValue(user)
-            )
-            .switchIfEmpty(ServerResponse.notFound().build());
+        .flatMap(user -> ServerResponse.ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(user)
+        )
+        .switchIfEmpty(ServerResponse.notFound().build());
   }
-
+  
 }
