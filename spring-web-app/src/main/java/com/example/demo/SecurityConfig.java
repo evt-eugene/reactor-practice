@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -11,7 +10,6 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-@SpringBootConfiguration
 @EnableReactiveMethodSecurity
 public class SecurityConfig {
 
@@ -39,4 +37,5 @@ public class SecurityConfig {
 
     return new MapReactiveUserDetailsService(user, admin);
   }
+
 }
