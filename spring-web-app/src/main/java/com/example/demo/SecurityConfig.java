@@ -9,18 +9,17 @@ import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @SpringBootConfiguration
 @EnableReactiveMethodSecurity
 public class SecurityConfig {
 
   @Bean
-  public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+  public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
     return http
-        .formLogin()
-        .and()
-        .authorizeExchange()
-        .anyExchange().authenticated()
-        .and()
+        .authorizeExchange(authorize -> authorize.anyExchange().permitAll())
+        .formLogin(withDefaults())
         .build();
   }
 
