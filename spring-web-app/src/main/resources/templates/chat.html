@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Spring WebFlux + WebSocket</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript">
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const publishFormEl = document.querySelector('#publish_message');
+        const messageInputEl = publishFormEl.querySelector('input[name="message"]');
+        const stopMessagingBtn = document.querySelector('#stop');
+        const messagesEl = document.querySelector('#messages');
+
+        const socket = new WebSocket("ws://localhost:8080/echo");
+
+        socket.onopen = function(e) {
+          console.log("[open] Connection established");
+          socket.send("Hi there!");
+        };
+
+        socket.onmessage = event => {
+          const messageElem = document.createElement('div');
+          messageElem.textContent = event.data;
+          messagesEl.prepend(messageElem);
+        };
+
+        socket.onclose = event => {
+          if (event.wasClean) {
+            console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+          } else {
+            console.log('[close] Connection aborted');
+          }
+        };
+
+        socket.onerror = error => {
+          console.error(`[error] ${error.message}`);
+        };
+
+        publishFormEl.onsubmit = event => {
+          event.preventDefault();
+          socket.send(messageInputEl.value);
+        };
+
+        stopMessagingBtn.onclick = event => {
+          socket.close(1000, "User clicked stop");
+        };
+
+      });
+
+    </script>
+  </head>
+  <body>
+    <h1>Send a message:</h1>
+
+    <form id="publish_message">
+      <input type="text" name="message">
+      <button type="submit">Send</button>
+    </form>
+
+    <button id="stop">Stop messaging</button>
+
+    <div id="messages"></div>
+  </body>
+</html>
