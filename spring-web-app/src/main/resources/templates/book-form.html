@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Spring WebFlux Add Book</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript">
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const messageEl = document.querySelector('#message');
+        const formEl = document.querySelector('#books_form');
+        const titleInputEl = formEl.querySelector("input[name=title]");
+
+        formEl.addEventListener('submit', e => {
+          e.preventDefault();
+
+          messageEl.textContent = '';
+
+          const title = titleInputEl.value;
+          const options = {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({title: title})
+          };
+
+          fetch("/books", options)
+            .then(resp => resp.json())
+            .then(data => {
+              console.log(data);
+              messageEl.textContent = 'Success!';
+            })
+            .catch(error => {
+              console.error(error);
+              messageEl.textContent = 'Error: ' + error.message;
+            });
+        });
+      });
+
+    </script>
+  </head>
+  <body>
+    <section>
+      <h1>Create book</h1>
+      <div id="message"></div>
+
+      <fieldset>
+        <legend>Create book</legend>
+        <form id="books_form" action="/books" method="post">
+          <label for="title">Title</label>
+          <input id="title" type="text" name="title" maxlength="255">
+          <button type="submit">Save</button>
+        </form>
+      </fieldset>
+
+      <a href="/books">See all books from db as JSON</a>
+    </section>
+
+    <section>
+      <h2>All by title "DDD":</h2>
+      <table>
+        <thead>
+          <tr>
+            <td>ID</td>
+            <td>TITLE</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="book : ${foundByDDDTitle}">
+            <td th:text="${book.id}">6832645d-c834-4344-9288-580240ebe250</td>
+            <td th:text="${book.title}">DDD</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>
