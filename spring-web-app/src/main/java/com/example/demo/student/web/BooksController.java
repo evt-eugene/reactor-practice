@@ -33,7 +33,7 @@ public class BooksController {
   public String bookAddForm(Model model) {
     var found = service.findByTitle("ddd");
 
-    model.addAttribute("foundByDDDTitle", new ReactiveDataDriverContextVariable(found));
+    model.addAttribute("booksByDDDTitle", new ReactiveDataDriverContextVariable(found));
 
     return "book-form.html";
   }
