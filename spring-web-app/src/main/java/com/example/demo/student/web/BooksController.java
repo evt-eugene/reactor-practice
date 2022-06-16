@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.ReplayProcessor;
 
 import java.net.URI;
 
@@ -17,16 +18,26 @@ import java.net.URI;
 @RequestMapping("/books")
 public class BooksController {
 
+  private final ReplayProcessor<Book> lastTwoCached = ReplayProcessor.create(2);
   private final BooksService service;
 
   public BooksController(BooksService service) {
     this.service = service;
+
+    service.findAll()
+        .subscribe(lastTwoCached);
   }
 
   @GetMapping
   @ResponseBody
   public Flux<Book> findAll() {
     return service.findAll();
+  }
+
+  @GetMapping("/cached")
+  @ResponseBody
+  public Flux<Book> findAllCached() {
+    return lastTwoCached;
   }
 
   @GetMapping("/add")
