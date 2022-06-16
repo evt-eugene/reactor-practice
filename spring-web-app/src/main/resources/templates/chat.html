@@ -21,12 +21,16 @@
         };
 
         socket.onmessage = event => {
+          console.log("WebSocket event: ", event);
+
           const messageElem = document.createElement('div');
           messageElem.textContent = event.data;
           messagesEl.prepend(messageElem);
         };
 
         socket.onclose = event => {
+          console.log("WebSocket event: ", event);
+
           if (event.wasClean) {
             console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
           } else {
