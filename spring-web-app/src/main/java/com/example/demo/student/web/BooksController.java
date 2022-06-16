@@ -38,6 +38,14 @@ public class BooksController {
     return "book-form.html";
   }
 
+  @GetMapping("/add/reactively")
+  public Mono<String> bookAddFormReactively(Model model) {
+    return service.findByTitle("ddd")
+        .collectList()
+        .doOnNext(books -> model.addAttribute("booksByDDDTitle", books))
+        .then(Mono.just("book-form.html"));
+  }
+
   @PostMapping
   public Mono<ResponseEntity<Book>> createBook(@RequestBody BookDto bookDto) {
     return service.createBook(bookDto)
