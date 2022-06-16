@@ -30,7 +30,7 @@ public class BooksController {
   }
 
   @GetMapping("/add")
-  public String bookAddFormGood(Model model) {
+  public String bookAddFormUsingTransferEncodingChunked(Model model) {
     var found = service.findByTitle("ddd");
 
     model.addAttribute("booksByDDDTitle", new ReactiveDataDriverContextVariable(found));
@@ -39,7 +39,7 @@ public class BooksController {
   }
 
   @GetMapping("/add/reactively")
-  public Mono<String> bookAddFormReactivelyBad(Model model) {
+  public Mono<String> bookAddForm(Model model) {
     return service.findByTitle("ddd")
         .collectList()
         .doOnNext(books -> model.addAttribute("booksByDDDTitle", books))
