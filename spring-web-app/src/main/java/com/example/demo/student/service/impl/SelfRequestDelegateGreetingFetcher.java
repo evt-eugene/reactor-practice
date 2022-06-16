@@ -7,9 +7,16 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
+import reactor.util.retry.RetryBackoffSpec;
+
+import java.time.Duration;
 
 @Component
 public class SelfRequestDelegateGreetingFetcher implements GreetingFetcher {
+
+  private static final long MAX_RETRY_ATTEMPTS = 3L;
+  private static final Duration MIN_BACKOFF = Duration.ofMillis(500);
 
   private final WebClient client;
 
@@ -27,6 +34,11 @@ public class SelfRequestDelegateGreetingFetcher implements GreetingFetcher {
         .uri("/greeting/get")
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
-        .bodyToMono(Greeting.class);
+        .bodyToMono(Greeting.class)
+        .retryWhen(retry3AttemptsWith500Ms());
+  }
+
+  private RetryBackoffSpec retry3AttemptsWith500Ms() {
+    return Retry.backoff(MAX_RETRY_ATTEMPTS, MIN_BACKOFF);
   }
 }
