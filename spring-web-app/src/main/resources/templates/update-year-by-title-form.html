@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Spring WebFlux + Thymeleaf</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript">
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const messageEl = document.querySelector('#message');
+        const formEl = document.querySelector('#books_update_form');
+        const yearInputEl = formEl.querySelector("#publishing_year");
+
+        formEl.addEventListener('submit', e => {
+          e.preventDefault();
+
+          messageEl.textContent = '';
+
+          const publishingYear = yearInputEl.value;
+          const options = {
+            method: 'PUT',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({publishingYear: publishingYear})
+          };
+
+          fetch("/books?title=ddd", options)
+            .then(resp => resp.json())
+            .then(data => {
+              console.log(data);
+
+              setTimeout(() => window.location.reload());
+            })
+            .catch(error => {
+              console.error(error);
+              messageEl.textContent = 'Error: ' + error.message;
+            });
+        });
+      });
+
+    </script>
+  </head>
+  <body>
+    <section>
+      <h1>Update book with a title "ddd":</h1>
+      <div id="message"></div>
+
+      <fieldset>
+        <legend>Update book publishing year</legend>
+
+        <form id="books_update_form" th:action="@{/book?title=ddd}" th:method="put">
+          <label for="publishing_year">Publishing year (1450 - 2055)</label>
+          <input id="publishing_year" type="number" name="publishing_year" placeholder="YYYY" min="1450" max="2055">
+          <button type="submit">Save</button>
+        </form>
+      </fieldset>
+    </section>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Publishing year</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="book : ${booksWithDDDTitle}">
+          <td th:text="${book.id}">7343b25a-81bb-4570-8648-0d93802d4a35</td>
+          <td th:text="${book.title}">ddd</td>
+          <td th:text="${book.publishingYear}">2001</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

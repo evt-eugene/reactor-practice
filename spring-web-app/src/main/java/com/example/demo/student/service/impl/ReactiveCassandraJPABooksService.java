@@ -3,12 +3,14 @@ package com.example.demo.student.service.impl;
 import com.example.demo.student.entity.Book;
 import com.example.demo.student.persistance.ReactiveSpringDataCassandraBookRepository;
 import com.example.demo.student.service.BooksService;
-import com.example.demo.student.web.BookDto;
+import com.example.demo.student.web.BookPublishingYearDto;
+import com.example.demo.student.web.BookTitleDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Year;
 import java.util.UUID;
 
 @Service
@@ -32,9 +34,22 @@ public class ReactiveCassandraJPABooksService implements BooksService {
   }
 
   @Override
-  public Mono<Book> createBook(BookDto dto) {
+  public Mono<Book> createBook(BookTitleDto dto) {
     return Mono.just(dto)
-        .map(d -> new Book(UUID.randomUUID(), d.getTitle()))
+        .map(d -> new Book(UUID.randomUUID(), d.getTitle(), Year.now()))
         .flatMap(repository::save);
+  }
+
+  @Override
+  public Flux<Book> updateBookPublishingYearByTitle(String title, BookPublishingYearDto dto) {
+    var publishingYear = dto.getPublishingYear();
+
+    return
+        repository.findByTitle(title)
+            .flatMap(book -> {
+                  book.setPublishingYear(publishingYear);
+                  return repository.save(book);
+                }
+            );
   }
 }

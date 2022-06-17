@@ -12,4 +12,5 @@ public interface ReactiveSpringDataCassandraBookRepository extends ReactiveCassa
 
   @Query(value = "SELECT * FROM books WHERE title = :title")
   Flux<Book> findByTitle(@Param("title") String title);
+
 }

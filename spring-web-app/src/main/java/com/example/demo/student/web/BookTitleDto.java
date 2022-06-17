@@ -2,12 +2,12 @@ package com.example.demo.student.web;
 
 import java.beans.ConstructorProperties;
 
-public final class BookDto {
+public final class BookTitleDto {
 
   private final String title;
 
   @ConstructorProperties("title")
-  public BookDto(String title) {
+  public BookTitleDto(String title) {
     this.title = title;
   }
 

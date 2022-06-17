@@ -6,7 +6,8 @@ CREATE KEYSPACE IF NOT EXISTS library
 
 CREATE TABLE IF NOT EXISTS library.books (
    id uuid PRIMARY KEY,
-   title text
+   title text,
+   publishing_year int
 );
 
 CREATE INDEX IF NOT EXISTS books_title_idx ON library.books (title);

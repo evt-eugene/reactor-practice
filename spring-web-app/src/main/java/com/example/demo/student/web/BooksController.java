@@ -53,18 +53,42 @@ public class BooksController {
   public Mono<String> bookAddForm(Model model) {
     return service.findByTitle("ddd")
         .collectList()
-        .doOnNext(books -> model.addAttribute("booksByDDDTitle", books))
+        .doOnNext(books -> model.addAttribute("booksWithDDDTitle", books))
         .then(Mono.just("book-form.html"));
   }
 
   @PostMapping
-  public Mono<ResponseEntity<Book>> createBook(@RequestBody BookDto bookDto) {
-    return service.createBook(bookDto)
+  public Mono<ResponseEntity<Book>> createBook(@RequestBody BookTitleDto titleDto) {
+    return service.createBook(titleDto)
         .map(b ->
                  ResponseEntity.created(URI.create("/books/" + b.getId()))
                      .contentType(MediaType.APPLICATION_JSON)
                      .body(b)
         )
         .defaultIfEmpty(ResponseEntity.badRequest().build());
+  }
+
+  @GetMapping("/booksWithDDDTitle")
+  public String showBooksForUpdateByTitle(Model model) {
+    var all = service.findByTitle("ddd");
+
+    model.addAttribute("booksWithDDDTitle", new ReactiveDataDriverContextVariable(all));
+
+    return "update-year-by-title-form.html";
+  }
+
+  @GetMapping(params = "title")
+  @ResponseBody
+  public Flux<Book> booksByTitle(@RequestParam("title") String title) {
+    return service.findByTitle(title);
+  }
+
+  @PutMapping(params = "title")
+  @ResponseBody
+  public Flux<Book> updateBookPublishingYearByTitle(
+      @RequestParam("title") String title,
+      @RequestBody BookPublishingYearDto yearDto
+  ) {
+    return service.updateBookPublishingYearByTitle(title, yearDto);
   }
 }
