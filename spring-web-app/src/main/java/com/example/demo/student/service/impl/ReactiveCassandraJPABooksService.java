@@ -46,10 +46,10 @@ public class ReactiveCassandraJPABooksService implements BooksService {
 
     return
         repository.findByTitle(title)
-            .flatMap(book -> {
-                  book.setPublishingYear(publishingYear);
-                  return repository.save(book);
-                }
-            );
+            .map(book -> {
+              book.setPublishingYear(publishingYear);
+              return book;
+            })
+            .transform(repository::saveAll);
   }
 }
