@@ -6,7 +6,6 @@ import com.example.demo.student.persistance.ReactiveSpringDataCassandraBookRepos
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.cassandra.DataCassandraTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.CassandraContainer;
@@ -17,7 +16,6 @@ import reactor.test.StepVerifier;
 
 @DataCassandraTest
 @Testcontainers
-@DirtiesContext
 public class BooksRepositoryIntegrationTests {
 
   @Container
