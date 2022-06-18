@@ -36,7 +36,7 @@ public class ReactiveCassandraJPABooksService implements BooksService {
   @Override
   public Mono<Book> createBook(BookTitleDto dto) {
     return Mono.just(dto)
-        .map(d -> new Book(UUID.randomUUID(), d.getTitle(), Year.now()))
+        .map(d -> new Book(UUID.randomUUID(), d.getTitle(), Year.now().getValue()))
         .flatMap(repository::save);
   }
 

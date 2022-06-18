@@ -1,7 +1,6 @@
 package com.example.demo.student.web;
 
 import java.beans.ConstructorProperties;
-import java.time.Year;
 
 public class BookPublishingYearDto {
 
@@ -12,7 +11,7 @@ public class BookPublishingYearDto {
     this.publishingYear = publishingYear;
   }
 
-  public Year getPublishingYear() {
-    return Year.of(publishingYear);
+  public int getPublishingYear() {
+    return publishingYear;
   }
 }

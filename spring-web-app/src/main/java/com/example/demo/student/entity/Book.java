@@ -4,20 +4,25 @@ import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
-import java.time.Year;
+import java.util.Objects;
 import java.util.UUID;
 
 @Table("books")
 public class Book {
 
-  @PrimaryKey
-  private final UUID id;
+  @PrimaryKey("id")
+  private UUID id;
+
+  @Column("title")
   private String title;
 
   @Column("publishing_year")
-  private Year publishingYear;
+  private int publishingYear;
 
-  public Book(UUID id, String title, Year publishingYear) {
+  protected Book() {
+  }
+
+  public Book(UUID id, String title, int publishingYear) {
     this.id = id;
     this.title = title;
     this.publishingYear = publishingYear;
@@ -35,12 +40,25 @@ public class Book {
     this.title = title;
   }
 
-  public Year getPublishingYear() {
+  public int getPublishingYear() {
     return publishingYear;
   }
 
-  public void setPublishingYear(Year publishingYear) {
+  public void setPublishingYear(int publishingYear) {
     this.publishingYear = publishingYear;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Book book = (Book) o;
+    return id.equals(book.id) && title.equals(book.title) && publishingYear == book.publishingYear;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, title, publishingYear);
   }
 }
 
