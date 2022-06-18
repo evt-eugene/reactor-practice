@@ -44,7 +44,7 @@ public class BooksController {
   public String bookAddFormUsingTransferEncodingChunked(Model model) {
     var found = service.findByTitle("ddd");
 
-    model.addAttribute("booksByDDDTitle", new ReactiveDataDriverContextVariable(found));
+    model.addAttribute("booksWithDDDTitle", new ReactiveDataDriverContextVariable(found));
 
     return "book-form.html";
   }
