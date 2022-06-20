@@ -3,10 +3,15 @@ package com.example.demo.integration.webflux;
 import com.example.demo.student.entity.Greeting;
 import com.example.demo.student.service.GreetingService;
 import com.example.demo.student.web.GreetingController;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -17,6 +22,7 @@ import static org.mockito.Mockito.*;
 
 
 @WebFluxTest(GreetingController.class)
+@Import(GreetingControllerIntegrationTests.MeterRegistryConfig.class)
 public class GreetingControllerIntegrationTests {
 
   @Autowired
@@ -63,5 +69,14 @@ public class GreetingControllerIntegrationTests {
 
   private static Mono<Greeting> createGreeting(String message) {
     return Mono.just(new Greeting(message));
+  }
+
+  @TestConfiguration
+  static class MeterRegistryConfig {
+
+    @Bean
+    public MeterRegistry registry() {
+      return new SimpleMeterRegistry();
+    }
   }
 }
