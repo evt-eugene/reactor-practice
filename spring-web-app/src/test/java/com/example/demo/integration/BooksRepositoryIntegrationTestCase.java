@@ -1,11 +1,11 @@
-package com.example.demo.integration.spring_boot;
+package com.example.demo.integration;
 
 import com.datastax.driver.core.utils.UUIDs;
 import com.example.demo.student.entity.Book;
 import com.example.demo.student.persistance.ReactiveSpringDataCassandraBookRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.cassandra.DataCassandraTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.CassandraContainer;
@@ -14,21 +14,21 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.test.StepVerifier;
 
-@DataCassandraTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @Testcontainers
-public class BooksRepositoryIntegrationTests {
+public class BooksRepositoryIntegrationTestCase {
 
   @Container
   private static final CassandraContainer<?> cassandraContainer = new CassandraContainer<>("cassandra:4.0.4")
-      .withInitScript("cql/test-db-schema.cql")
       .withExposedPorts(9042)
       .withNetwork(Network.newNetwork());
 
   @DynamicPropertySource
   private static void bindCassandraProperties(DynamicPropertyRegistry registry) {
-    registry.add("spring.data.cassandra.keyspace-name", () -> "library");
-    registry.add("spring.data.cassandra.contact-points", cassandraContainer::getHost);
-    registry.add("spring.data.cassandra.port", () -> cassandraContainer.getMappedPort(9042));
+    registry.add("cassandra.contact-points", cassandraContainer::getHost);
+    registry.add("cassandra.port", () -> cassandraContainer.getMappedPort(9042));
+    registry.add("cassandra.local-datacenter", () -> "datacenter1");
+    registry.add("cassandra.keyspace-name", () -> "library");
   }
 
   @Autowired

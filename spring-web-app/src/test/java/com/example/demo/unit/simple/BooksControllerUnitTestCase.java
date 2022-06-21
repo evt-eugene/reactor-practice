@@ -1,4 +1,4 @@
-package com.example.demo.unit;
+package com.example.demo.unit.simple;
 
 import com.example.demo.student.entity.Book;
 import com.example.demo.student.service.BooksService;
@@ -19,12 +19,12 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 /**
- * This test doesn't use @InjectMocks because the constructor of BookController performs service.findAll() operation
+ * This testcase doesn't use @InjectMocks because the constructor of BookController performs service.findAll() operation
  * before providing values for the service.findAll()-call
  * In other case @InjectMocks and Mockito.when is a better choice!
  */
 @ExtendWith(MockitoExtension.class)
-public class BookControllerUnitTests {
+public class BooksControllerUnitTestCase {
 
   @Mock
   private BooksService service;

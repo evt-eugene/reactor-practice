@@ -1,4 +1,4 @@
-package com.example.demo.integration.webflux;
+package com.example.demo.unit.webflux;
 
 import com.example.demo.student.entity.Greeting;
 import com.example.demo.student.service.GreetingService;
@@ -22,8 +22,8 @@ import static org.mockito.Mockito.*;
 
 
 @WebFluxTest(GreetingController.class)
-@Import(GreetingControllerIntegrationTests.MeterRegistryConfig.class)
-public class GreetingControllerIntegrationTests {
+@Import(GreetingControllerUnitTestCase.MeterRegistryConfig.class)
+public class GreetingControllerUnitTestCase {
 
   @Autowired
   private WebTestClient webTestClient;

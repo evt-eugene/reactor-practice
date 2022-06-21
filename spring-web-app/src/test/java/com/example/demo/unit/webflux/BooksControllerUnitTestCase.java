@@ -1,4 +1,4 @@
-package com.example.demo.integration.webflux;
+package com.example.demo.unit.webflux;
 
 import com.example.demo.student.entity.Book;
 import com.example.demo.student.service.BooksService;
@@ -31,9 +31,9 @@ import static org.springframework.security.test.web.reactive.server.SecurityMock
  */
 @WebFluxTest(BooksController.class)
 @ImportAutoConfiguration({
-    BooksControllerIntegrationTests.BookServiceConfig.class
+    BooksControllerUnitTestCase.BookServiceConfig.class
 })
-public class BooksControllerIntegrationTests {
+public class BooksControllerUnitTestCase {
 
   @Autowired
   private WebTestClient webTestClient;
