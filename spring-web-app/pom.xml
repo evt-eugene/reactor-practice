@@ -128,7 +128,18 @@
                     <includes>
                         <include>**/*UnitTestCase.java</include>
                     </includes>
+                    <excludes>
+                        <exclude>**/*IntegrationTestCase.java</exclude>
+                    </excludes>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -138,7 +149,18 @@
                     <includes>
                         <include>**/*IntegrationTestCase.java</include>
                     </includes>
+                    <excludes>
+                        <exclude>**/*UnitTestCase.java</exclude>
+                    </excludes>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
