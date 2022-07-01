@@ -8,6 +8,13 @@ services:
       - "9042:9042"
     environment:
       CASSANDRA_CLUSTER_NAME: BooksCluster
+    mem_limit: 2g
+    healthcheck:
+      test: [ "CMD", "cqlsh", "-e", "describe keyspaces" ]
+      interval: 5s
+      timeout: 5s
+      retries: 60
+    
 
   prometheus:
     image: prom/prometheus:v2.36.2
