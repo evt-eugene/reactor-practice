@@ -57,9 +57,11 @@ public class CassandraConfig extends AbstractReactiveCassandraConfiguration {
   @Override
   protected List<String> getStartupScripts() {
     return List.of(
-        loadResourceAsString("classpath:cql/create_keyspace.cql", UTF_8),
-        loadResourceAsString("classpath:cql/create_books_table.cql", UTF_8),
-        loadResourceAsString("classpath:cql/create_books_title_index.cql", UTF_8)
+        loadResourceAsString("classpath:cql/1_create_keyspace.cql", UTF_8),
+        loadResourceAsString("classpath:cql/2_create_books_table.cql", UTF_8),
+        loadResourceAsString("classpath:cql/3_create_books_title_index.cql", UTF_8),
+        loadResourceAsString("classpath:cql/4_create_user_defined_fullname_type.cql", UTF_8),
+        loadResourceAsString("classpath:cql/5_create_librarian_table.cql", UTF_8)
     );
   }
 

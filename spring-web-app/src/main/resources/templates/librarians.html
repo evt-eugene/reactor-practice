@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Spring WebFlux + Reactive Thymeleaf</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript">
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const formEl = document.querySelector('#librarian_form');
+
+        const firstNameInputEl = formEl.querySelector("input[name=first-name]");
+        const lastNameInputEl = formEl.querySelector("input[name=last-name]");
+        const middleNameInputEl = formEl.querySelector("input[name=middle-name]");
+        const ageInputEl = formEl.querySelector("input[name=age]");
+
+        formEl.addEventListener('submit', e => {
+          e.preventDefault();
+
+          const firstName = firstNameInputEl.value;
+          const lastName = lastNameInputEl.value;
+          const middleName = middleNameInputEl.value;
+          const age = ageInputEl.value;
+
+          const options = {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({firstName, lastName, middleName, age})
+          };
+
+          fetch("/librarians", options)
+            .then(resp => resp.json())
+            .then(data => {
+              console.log(data);
+              window.location.reload();
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        });
+      });
+
+
+    </script>
+  </head>
+  <body>
+    <h1>Librarians:</h1>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>First name</th>
+          <th>Last name</th>
+          <th>Middle name</th>
+          <th>Age</th>
+          <th>Version</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="librarian : ${librarians}"
+            th:with="fullName=${librarian.fullName}">
+          <td th:text="${librarian.id}">9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d</td>
+          <td th:text="${fullName.firstName}">Jack</td>
+          <td th:text="${fullName.lastName}">Sparrow</td>
+          <td th:text="${fullName.middleName}">Johnny</td>
+          <td th:text="${librarian.age}">56</td>
+          <td th:text="${librarian.version}">0</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Add a librarian</h2>
+
+    <form id="librarian_form" th:action="@{/librarians}" th:method="post">
+      <fieldset>
+        <legend>Specify the name:</legend>
+
+        <label for="first_name">First name</label>
+        <input id="first_name" name="first-name" maxlength="250" required>
+
+        <label for="last_name">First name</label>
+        <input id="last_name" name="last-name" maxlength="250" required>
+
+        <label for="middle_name">First name</label>
+        <input id="middle_name" name="middle-name" maxlength="250" required>
+      </fieldset>
+
+      <fieldset>
+        <legend>Specify the age:</legend>
+        <label for="age">Age (18 - 95)</label>
+        <input id="age" name="age" type="number" min="18" max="95" required>
+      </fieldset>
+
+      <button type="submit">Save</button>
+    </form>
+
+  </body>
+</html>
