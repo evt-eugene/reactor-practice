@@ -1,7 +1,7 @@
 package com.example.demo.student.service.impl;
 
 import com.example.demo.student.entity.Book;
-import com.example.demo.student.persistance.ReactiveSpringDataCassandraBookRepository;
+import com.example.demo.student.persistence.ReactiveSpringDataCassandraBookRepository;
 import com.example.demo.student.service.BooksService;
 import com.example.demo.student.web.BookPublishingYearDto;
 import com.example.demo.student.web.BookTitleDto;
@@ -44,12 +44,11 @@ public class ReactiveCassandraJPABooksService implements BooksService {
   public Flux<Book> updateBookPublishingYearByTitle(String title, BookPublishingYearDto dto) {
     var publishingYear = dto.getPublishingYear();
 
-    return
-        repository.findByTitle(title)
-            .map(book -> {
-              book.setPublishingYear(publishingYear);
-              return book;
-            })
-            .transform(repository::saveAll);
+    return repository.findByTitle(title)
+        .map(book -> {
+          book.setPublishingYear(publishingYear);
+          return book;
+        })
+        .transform(repository::saveAll);
   }
 }

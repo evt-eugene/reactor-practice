@@ -1,4 +1,4 @@
-package com.example.demo.student.persistance;
+package com.example.demo.student.persistence;
 
 import com.example.demo.student.entity.Book;
 import org.springframework.data.cassandra.repository.Query;
