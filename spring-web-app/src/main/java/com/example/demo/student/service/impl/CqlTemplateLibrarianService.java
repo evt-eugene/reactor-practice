@@ -34,11 +34,10 @@ public class CqlTemplateLibrarianService implements LibrarianService {
 
   @Override
   public Mono<Librarian> createLibrarian(LibrarianDto dto) {
-    var id = Uuids.timeBased();
-
-    return cqlTemplate
-        .execute(INSERT_ONE, id, dto.getFirstName(), dto.getLastName(), dto.getMiddleName(), dto.getAge())
-        .flatMap((wasApplied) -> cqlTemplate.queryForObject(SELECT_ONE_BY_ID, ROW_MAPPER, id));
+    return Mono.defer(() -> Mono.just(Uuids.timeBased()))
+        .flatMap(id -> cqlTemplate
+            .execute(INSERT_ONE, id, dto.getFirstName(), dto.getLastName(), dto.getMiddleName(), dto.getAge())
+            .flatMap((wasApplied) -> cqlTemplate.queryForObject(SELECT_ONE_BY_ID, ROW_MAPPER, id)));
   }
 
   private static final RowMapper<Librarian> ROW_MAPPER = (row, rowNum) -> {
