@@ -3,11 +3,14 @@ package com.example.demo.student.web;
 import com.example.demo.student.entity.Librarian;
 import com.example.demo.student.service.LibrarianService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/librarians")
@@ -33,5 +36,11 @@ public class LibrariansController {
   @ResponseBody
   public Mono<Librarian> addLibrarian(@RequestBody LibrarianDto dto) {
     return service.createLibrarian(dto);
+  }
+
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public Mono<Void> deleteLibrarian(@PathVariable("id") UUID id) {
+    return service.deleteLibrarian(id);
   }
 }

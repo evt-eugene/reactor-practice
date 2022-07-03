@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @Service
 public class CqlTemplateLibrarianService implements LibrarianService {
 
@@ -19,6 +21,7 @@ public class CqlTemplateLibrarianService implements LibrarianService {
   private static final String SELECT_ONE_BY_ID = "SELECT id, name, age, version FROM library.librarians WHERE id=?";
   private static final String INSERT_ONE = "INSERT INTO library.librarians (id, name, age, version)"
                                                + " VALUES (?, {firstname: ?, lastname: ?, middlename: ?}, ?, 0)";
+  private static final String DELETE_ONE = "DELETE FROM library.librarians WHERE id=?";
 
   private final ReactiveCqlTemplate cqlTemplate;
 
@@ -37,7 +40,14 @@ public class CqlTemplateLibrarianService implements LibrarianService {
     return Mono.defer(() -> Mono.just(Uuids.timeBased()))
         .flatMap(id -> cqlTemplate
             .execute(INSERT_ONE, id, dto.getFirstName(), dto.getLastName(), dto.getMiddleName(), dto.getAge())
-            .flatMap((wasApplied) -> cqlTemplate.queryForObject(SELECT_ONE_BY_ID, ROW_MAPPER, id)));
+            .flatMap(wasApplied -> cqlTemplate.queryForObject(SELECT_ONE_BY_ID, ROW_MAPPER, id)));
+  }
+
+  @Override
+  public Mono<Void> deleteLibrarian(UUID id) {
+    return cqlTemplate.execute(DELETE_ONE, id)
+        .flatMap(wasApplied -> !wasApplied ? Mono.error(new RuntimeException("The query was not applied")) : Mono.empty())
+        .then();
   }
 
   private static final RowMapper<Librarian> ROW_MAPPER = (row, rowNum) -> {
