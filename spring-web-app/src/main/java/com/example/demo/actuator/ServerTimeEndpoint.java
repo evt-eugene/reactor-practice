@@ -9,7 +9,7 @@ import java.time.Instant;
 import java.util.Map;
 
 @Component
-@Endpoint(id = "server-time")
+@Endpoint(id = "servertime")
 public class ServerTimeEndpoint {
 
   @ReadOperation
