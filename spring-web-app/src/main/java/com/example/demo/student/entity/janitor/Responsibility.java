@@ -1,8 +1,23 @@
-package com.example.demo.student.entity;
+package com.example.demo.student.entity.janitor;
+
+import java.util.Collections;
+import java.util.List;
 
 public final class Responsibility {
 
-  private String description;
+  private final String description;
+  private final List<Skill> skills;
 
-  private String 
+  public Responsibility(String description, List<Skill> skills) {
+    this.description = description;
+    this.skills = skills;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public List<Skill> getSkills() {
+    return Collections.unmodifiableList(skills);
+  }
 }

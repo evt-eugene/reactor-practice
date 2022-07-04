@@ -1,4 +1,4 @@
-package com.example.demo.student.entity;
+package com.example.demo.student.entity.librarian;
 
 import java.util.UUID;
 

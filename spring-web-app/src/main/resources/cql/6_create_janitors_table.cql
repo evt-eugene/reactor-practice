@@ -4,6 +4,5 @@ CREATE TABLE IF NOT EXISTS library.janitors (
   description text,
   skills list<text>,
   version bigint,
-  PRIMARY KEY ((id), name)
-)
-WITH CLUSTERING ORDER BY (name ASC);
+  PRIMARY KEY (id)
+);

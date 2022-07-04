@@ -1,24 +1,68 @@
 package com.example.demo.student.service.impl;
 
-import com.example.demo.student.entity.Janitor;
+import com.datastax.oss.driver.api.core.ConsistencyLevel;
+import com.datastax.oss.driver.api.core.uuid.Uuids;
+import com.example.demo.student.entity.janitor.Janitor;
+import com.example.demo.student.entity.janitor.Responsibility;
 import com.example.demo.student.service.JanitorService;
+import com.example.demo.student.web.JanitorDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.cassandra.core.CassandraTemplate;
-import org.springframework.data.cassandra.core.query.Criteria;
-import org.springframework.data.cassandra.core.query.Query;
+import org.springframework.data.cassandra.core.EntityWriteResult;
+import org.springframework.data.cassandra.core.InsertOptions;
+import org.springframework.data.cassandra.core.ReactiveCassandraTemplate;
+import org.springframework.data.cassandra.core.UpdateOptions;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-public class CassandraTemplateJanitorService implements JanitorService {
+import java.util.UUID;
 
-  private final CassandraTemplate template;
+
+@Service
+public class ReactiveCassandraTemplateJanitorService implements JanitorService {
+
+  private final ReactiveCassandraTemplate template;
 
   @Autowired
-  public CassandraTemplateJanitorService(CassandraTemplate template) {
+  public ReactiveCassandraTemplateJanitorService(ReactiveCassandraTemplate template) {
     this.template = template;
   }
 
   @Override
   public Flux<Janitor> findAll() {
-    return template.select(Query.query(Criteria.where("id").is("1")), Janitor.class).;
+    return template.query(Janitor.class).all();
+  }
+
+  @Override
+  public Mono<Janitor> findById(UUID id) {
+    return template.selectOneById(id, Janitor.class);
+  }
+
+  @Override
+  public Mono<Janitor> createJanitor(JanitorDto dto) {
+    return Mono.defer(() -> {
+          var responsibility = new Responsibility(dto.getDesc(), dto.getSkills());
+          var janitor = new Janitor(Uuids.timeBased(), dto.getName(), responsibility);
+
+          return Mono.just(janitor);
+        })
+        .flatMap(janitor -> {
+          var options = InsertOptions.builder().consistencyLevel(ConsistencyLevel.ONE).build();
+          return template.insert(Janitor.class).withOptions(options).one(janitor);
+        })
+        .map(EntityWriteResult::getEntity);
+  }
+
+  @Override
+  public Mono<Janitor> updateJanitor(UUID id, JanitorDto dto) {
+    return findById(id)
+        .flatMap(janitor -> {
+          janitor.setName(dto.getName());
+          janitor.setResponsibility(new Responsibility(dto.getDesc(), dto.getSkills()));
+
+          var options = UpdateOptions.builder().consistencyLevel(ConsistencyLevel.ONE).build();
+          return template.update(janitor, options);
+        })
+        .map(EntityWriteResult::getEntity);
   }
 }

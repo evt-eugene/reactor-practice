@@ -1,6 +1,6 @@
 package com.example.demo.student.service.impl;
 
-import com.example.demo.student.entity.Student;
+import com.example.demo.student.entity.student.Student;
 import com.example.demo.student.service.UserService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;

@@ -1,6 +1,6 @@
 package com.example.demo.student.web;
 
-import com.example.demo.student.entity.Profile;
+import com.example.demo.student.entity.profile.Profile;
 import com.example.demo.student.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

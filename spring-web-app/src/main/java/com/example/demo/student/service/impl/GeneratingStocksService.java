@@ -1,7 +1,7 @@
 package com.example.demo.student.service.impl;
 
-import com.example.demo.student.entity.Currency;
-import com.example.demo.student.entity.StockItem;
+import com.example.demo.student.entity.stocks.Currency;
+import com.example.demo.student.entity.stocks.StockItem;
 import com.example.demo.student.service.StockService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;

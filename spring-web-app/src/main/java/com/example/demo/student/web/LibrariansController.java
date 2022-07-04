@@ -1,6 +1,6 @@
 package com.example.demo.student.web;
 
-import com.example.demo.student.entity.Librarian;
+import com.example.demo.student.entity.librarian.Librarian;
 import com.example.demo.student.service.LibrarianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

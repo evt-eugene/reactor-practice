@@ -1,6 +1,6 @@
 package com.example.demo.student.web;
 
-import com.example.demo.student.entity.Student;
+import com.example.demo.student.entity.student.Student;
 import com.example.demo.student.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

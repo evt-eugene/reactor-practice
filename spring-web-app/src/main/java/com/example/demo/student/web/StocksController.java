@@ -1,6 +1,6 @@
 package com.example.demo.student.web;
 
-import com.example.demo.student.entity.StockItem;
+import com.example.demo.student.entity.stocks.StockItem;
 import com.example.demo.student.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

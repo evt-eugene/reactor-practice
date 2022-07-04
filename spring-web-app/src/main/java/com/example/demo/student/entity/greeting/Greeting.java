@@ -1,4 +1,4 @@
-package com.example.demo.student.entity;
+package com.example.demo.student.entity.greeting;
 
 import java.beans.ConstructorProperties;
 

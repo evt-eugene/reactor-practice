@@ -1,10 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <title>Update janitor</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const formEl = document.querySelector('#update_janitor_form');
+        const idInputEl = formEl.querySelector("#id");
+        const nameInputEl = formEl.querySelector("#name");
+        const descInputEl = formEl.querySelector("#responsibility_desc");
+        const skillInputEl = formEl.querySelector("#responsibility_skill");
+
+        formEl.addEventListener('submit', e => {
+          e.preventDefault();
+
+          const id = idInputEl.value;
+          const name = nameInputEl.value;
+          const desc = descInputEl.value;
+          const skill = skillInputEl.value;
+
+          const options = {
+            method: 'PUT',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({name, responsibility: {desc, skills: [skill]}})
+          };
+
+          fetch(`/janitors/${id}`, options)
+            .then(resp => {
+              return resp.json();
+            })
+            .then(data => {
+              console.log(data);
+
+              window.setTimeout(() => alert("Success!!"));
+            })
+            .catch(error => {
+              console.error(error);
+
+              window.setTimeout(() => alert("Error!!"));
+            });
+        });
+      });
+
+
+
+    </script>
+  </head>
+  <body>
+    <form id="update_janitor_form" action="#">
+      <label for="id">Id:</label>
+      <input id="id" type="text" name="id" required>
+
+      <br>
+
+      <label for="name">Name:</label>
+      <input id="name" type="text" name="name" required>
+
+      <br>
+
+      <label for="responsibility_desc">Responsibility description:</label>
+      <input id="responsibility_desc" type="text" name="desc" required>
+
+      <br>
+
+      <label for="responsibility_skill">
+        Responsibility skills: (
+        KNOWLEDGE_OF_CLEANING_CHEMICALS_AND_SUPPLIES,
+        ABILITY_TO_HANDLE_HEAVY_EQUIPMENT or
+        ABILITY_TO_WORK_INDEPENDENTLY
+        )
+      </label>
+      <input id="responsibility_skill" name="skills" required>
+
+      <br>
+
+      <button type="submit">Save</button>
+    </form>
+  </body>
 </html>

@@ -1,4 +1,4 @@
-package com.example.demo.student.entity;
+package com.example.demo.student.entity.book;
 
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;

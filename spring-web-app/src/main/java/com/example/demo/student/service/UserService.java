@@ -1,6 +1,6 @@
 package com.example.demo.student.service;
 
-import com.example.demo.student.entity.Student;
+import com.example.demo.student.entity.student.Student;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

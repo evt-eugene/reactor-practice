@@ -1,6 +1,6 @@
 package com.example.demo.student.service.impl;
 
-import com.example.demo.student.entity.Greeting;
+import com.example.demo.student.entity.greeting.Greeting;
 import com.example.demo.student.service.GreetingGetter;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;

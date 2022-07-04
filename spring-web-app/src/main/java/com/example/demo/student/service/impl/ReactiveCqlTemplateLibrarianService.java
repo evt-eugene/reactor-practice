@@ -1,8 +1,8 @@
 package com.example.demo.student.service.impl;
 
 import com.datastax.oss.driver.api.core.uuid.Uuids;
-import com.example.demo.student.entity.FullName;
-import com.example.demo.student.entity.Librarian;
+import com.example.demo.student.entity.librarian.FullName;
+import com.example.demo.student.entity.librarian.Librarian;
 import com.example.demo.student.service.LibrarianService;
 import com.example.demo.student.web.LibrarianDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 @Service
-public class CqlTemplateLibrarianService implements LibrarianService {
+public class ReactiveCqlTemplateLibrarianService implements LibrarianService {
 
   private static final String SELECT_ALL = "SELECT id, name, age, version FROM library.librarians";
   private static final String SELECT_ONE_BY_ID = "SELECT id, name, age, version FROM library.librarians WHERE id=?";
@@ -26,7 +26,7 @@ public class CqlTemplateLibrarianService implements LibrarianService {
   private final ReactiveCqlTemplate cqlTemplate;
 
   @Autowired
-  public CqlTemplateLibrarianService(ReactiveCqlTemplate cqlTemplate) {
+  public ReactiveCqlTemplateLibrarianService(ReactiveCqlTemplate cqlTemplate) {
     this.cqlTemplate = cqlTemplate;
   }
 

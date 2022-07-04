@@ -1,6 +1,6 @@
 package com.example.demo.student.web;
 
-import com.example.demo.student.entity.Book;
+import com.example.demo.student.entity.book.Book;
 import com.example.demo.student.service.BooksService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

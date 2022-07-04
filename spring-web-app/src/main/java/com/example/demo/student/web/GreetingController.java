@@ -1,6 +1,6 @@
 package com.example.demo.student.web;
 
-import com.example.demo.student.entity.Greeting;
+import com.example.demo.student.entity.greeting.Greeting;
 import com.example.demo.student.service.GreetingService;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;

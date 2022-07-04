@@ -1,6 +1,6 @@
 package com.example.demo.student.service.impl;
 
-import com.example.demo.student.entity.Book;
+import com.example.demo.student.entity.book.Book;
 import com.example.demo.student.persistence.ReactiveSpringDataCassandraBookRepository;
 import com.example.demo.student.service.BooksService;
 import com.example.demo.student.web.BookPublishingYearDto;

@@ -1,6 +1,6 @@
 package com.example.demo.student.persistence;
 
-import com.example.demo.student.entity.Book;
+import com.example.demo.student.entity.book.Book;
 import org.springframework.data.cassandra.repository.Query;
 import org.springframework.data.cassandra.repository.ReactiveCassandraRepository;
 import org.springframework.data.repository.query.Param;

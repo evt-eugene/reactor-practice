@@ -1,6 +1,6 @@
 package com.example.demo.student.service.impl;
 
-import com.example.demo.student.entity.Greeting;
+import com.example.demo.student.entity.greeting.Greeting;
 import com.example.demo.student.service.GreetingFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

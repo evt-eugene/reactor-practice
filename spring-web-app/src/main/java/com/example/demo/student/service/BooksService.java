@@ -1,6 +1,6 @@
 package com.example.demo.student.service;
 
-import com.example.demo.student.entity.Book;
+import com.example.demo.student.entity.book.Book;
 import com.example.demo.student.web.BookPublishingYearDto;
 import com.example.demo.student.web.BookTitleDto;
 import reactor.core.publisher.Flux;

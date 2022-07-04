@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Collections;
 import java.util.List;
 
-public final class JanitorInsertDto {
+public final class JanitorDto {
 
   @JsonProperty("name")
   private final String name;
@@ -14,7 +14,7 @@ public final class JanitorInsertDto {
   @JsonProperty("responsibility")
   private final ResponsibilityDto responsibilityDto;
 
-  public JanitorInsertDto(String name, ResponsibilityDto responsibilityDto) {
+  public JanitorDto(String name, ResponsibilityDto responsibilityDto) {
     this.name = name;
     this.responsibilityDto = responsibilityDto;
   }

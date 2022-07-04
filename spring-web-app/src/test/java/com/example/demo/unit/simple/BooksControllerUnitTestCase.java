@@ -1,6 +1,6 @@
 package com.example.demo.unit.simple;
 
-import com.example.demo.student.entity.Book;
+import com.example.demo.student.entity.book.Book;
 import com.example.demo.student.service.BooksService;
 import com.example.demo.student.web.BooksController;
 import org.junit.jupiter.api.Test;
