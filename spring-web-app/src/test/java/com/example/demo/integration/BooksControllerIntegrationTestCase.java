@@ -1,4 +1,4 @@
-package com.example.demo.unit.integration;
+package com.example.demo.integration;
 
 import com.datastax.driver.core.utils.UUIDs;
 import com.example.demo.student.entity.book.Book;
