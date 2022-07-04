@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Add janitor</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const formEl = document.querySelector('#add_janitor_form');
+        const nameInputEl = formEl.querySelector("#name");
+        const descSelectEl = formEl.querySelector("#responsibility_desc");
+        const skillsSelectEl = formEl.querySelector("#responsibility_skills");
+
+        formEl.addEventListener('submit', e => {
+          e.preventDefault();
+
+          const name = nameInputEl.value;
+          const desc = descSelectEl.value;
+          const skills = Array.from(skillsSelectEl.selectedOptions).map(option => option.value);
+
+          const options = {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({name, responsibility: {desc, skills}})
+          };
+
+          fetch("/janitors", options)
+            .then(resp => resp.json())
+            .then(data => {
+              console.log(data);
+
+              window.setTimeout(() => alert("Success!!"));
+            })
+            .catch(error => {
+              console.error(error);
+
+              window.setTimeout(() => alert("Error!!"));
+            });
+        });
+      });
+
+    </script>
+  </head>
+  <body>
+    <form id="add_janitor_form" action="#">
+      <label for="name">Name:</label>
+      <input id="name" type="text" name="name" required>
+
+      <br>
+
+      <label for="responsibility_desc">Responsibility description:</label>
+      <select id="responsibility_desc" name="desc" required>
+        <optgroup label="Junior">
+          <option>Make adjustments and minor repairs</option>
+          <option>Carry out heavy cleansing tasks and special projects</option>
+        </optgroup>
+        <optgroup label="Senior">
+          <option>Clean and supply designated building areas</option>
+          <option>Perform and document routine inspection and maintenance activities</option>
+          <option>Cooperate with the rest of the staff</option>
+        </optgroup>
+      </select>
+
+      <br>
+
+      <label for="responsibility_skills">Responsibility skills:</label>
+      <select id="responsibility_skills" name="skills" multiple required>
+        <option value="KNOWLEDGE_OF_CLEANING_CHEMICALS_AND_SUPPLIES">Knowledge of cleaning chemicals and supplies</option>
+        <option value="ABILITY_TO_HANDLE_HEAVY_EQUIPMENT">Ability to handle heavy equipment</option>
+        <option value="ABILITY_TO_WORK_INDEPENDENTLY">Ability to work independently</option>
+      </select>
+
+      <br>
+
+      <button type="submit">Save</button>
+    </form>
+  </body>
+</html>
