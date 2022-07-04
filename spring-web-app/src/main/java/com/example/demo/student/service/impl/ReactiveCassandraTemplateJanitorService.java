@@ -7,10 +7,7 @@ import com.example.demo.student.entity.janitor.Responsibility;
 import com.example.demo.student.service.JanitorService;
 import com.example.demo.student.web.JanitorDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.cassandra.core.EntityWriteResult;
-import org.springframework.data.cassandra.core.InsertOptions;
-import org.springframework.data.cassandra.core.ReactiveCassandraTemplate;
-import org.springframework.data.cassandra.core.UpdateOptions;
+import org.springframework.data.cassandra.core.*;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -64,5 +61,15 @@ public class ReactiveCassandraTemplateJanitorService implements JanitorService {
           return template.update(janitor, options);
         })
         .map(EntityWriteResult::getEntity);
+  }
+
+  @Override
+  public Mono<Boolean> deleteJanitor(UUID id) {
+    return findById(id)
+        .flatMap(janitor -> {
+          var options = DeleteOptions.builder().consistencyLevel(ConsistencyLevel.ONE).build();
+          return template.delete(janitor, options);
+        })
+        .map(WriteResult::wasApplied);
   }
 }

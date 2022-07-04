@@ -15,6 +15,8 @@ public interface JanitorService {
 
   Mono<Janitor> createJanitor(JanitorDto dto);
 
-  Mono<Janitor> updateJanitor(UUID uuid, JanitorDto dto);
+  Mono<Janitor> updateJanitor(UUID id, JanitorDto dto);
+
+  Mono<Boolean> deleteJanitor(UUID id);
 
 }
