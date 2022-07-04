@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Delete janitor</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const formEl = document.querySelector('#delete_janitor_form');
+        const idInputEl = formEl.querySelector("#id");
+
+        formEl.addEventListener('submit', e => {
+          e.preventDefault();
+
+          const id = idInputEl.value;
+
+          fetch(`/janitors/${id}`, {method: 'DELETE'})
+            .then(resp => {
+              console.log(resp);
+
+              if (!resp.ok) {
+                throw new Error(resp.statusText);
+              }
+
+              window.setTimeout(() => alert("Success!!"));
+            })
+            .catch(error => {
+              console.error(error);
+
+              window.setTimeout(() => alert("Error!!"));
+            });
+        });
+      });
+
+    </script>
+  </head>
+  <body>
+    <form id="delete_janitor_form" action="#">
+      <label for="id">Id:</label>
+      <input id="id" type="text" name="id" required>
+
+      <br>
+
+      <button type="submit">Delete</button>
+    </form>
+  </body>
+</html>
