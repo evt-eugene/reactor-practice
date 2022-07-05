@@ -1,8 +1,8 @@
 package com.example.demo.unit.webflux;
 
-import com.example.demo.student.entity.greeting.Greeting;
-import com.example.demo.student.service.GreetingService;
-import com.example.demo.student.web.GreetingController;
+import com.example.demo.student.greeting.entity.Greeting;
+import com.example.demo.student.greeting.service.GreetingService;
+import com.example.demo.student.greeting.web.GreetingController;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.Test;

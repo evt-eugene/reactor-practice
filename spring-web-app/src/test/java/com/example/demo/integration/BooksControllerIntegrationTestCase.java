@@ -1,8 +1,8 @@
 package com.example.demo.integration;
 
 import com.datastax.driver.core.utils.UUIDs;
-import com.example.demo.student.entity.book.Book;
-import com.example.demo.student.persistence.ReactiveSpringDataCassandraBookRepository;
+import com.example.demo.student.books.entity.Book;
+import com.example.demo.student.books.persistence.ReactiveSpringDataCassandraBookRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

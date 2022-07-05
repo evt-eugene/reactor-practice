@@ -1,9 +1,9 @@
 package com.example.demo.unit.webflux;
 
-import com.example.demo.student.entity.book.Book;
-import com.example.demo.student.service.BooksService;
-import com.example.demo.student.web.BookPublishingYearDto;
-import com.example.demo.student.web.BooksController;
+import com.example.demo.student.books.entity.Book;
+import com.example.demo.student.books.service.BooksService;
+import com.example.demo.student.books.web.BookPublishingYearDto;
+import com.example.demo.student.books.web.BooksController;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
