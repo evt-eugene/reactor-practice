@@ -8,6 +8,7 @@ import com.datastax.oss.driver.api.core.config.TypedDriverOption;
 import com.datastax.oss.driver.api.core.cql.Row;
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
+import com.datastax.oss.driver.internal.core.loadbalancing.DcInferringLoadBalancingPolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +39,7 @@ public class StandaloneCassandraDriverApplication {
     map.put(TypedDriverOption.CONTACT_POINTS, List.of("127.0.0.1:9042"));
     map.put(TypedDriverOption.LOAD_BALANCING_LOCAL_DATACENTER, "datacenter1");
     map.put(TypedDriverOption.SESSION_KEYSPACE, "library");
+    map.put(TypedDriverOption.LOAD_BALANCING_POLICY_CLASS, DcInferringLoadBalancingPolicy.class.getCanonicalName());
 
     var loader = DriverConfigLoader.fromMap(map);
 
