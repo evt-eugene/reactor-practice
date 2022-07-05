@@ -1,7 +1,10 @@
 package com.example.demo.standalone;
 
 import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.core.cql.BatchType;
 import com.example.demo.student.books.entity.Book;
+import com.example.demo.student.janitors.entity.Janitor;
+import com.example.demo.student.janitors.entity.Responsibility;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.data.cassandra.core.CassandraTemplate;
@@ -9,6 +12,7 @@ import org.springframework.data.cassandra.core.query.Criteria;
 import org.springframework.data.cassandra.core.query.Query;
 
 import java.net.InetSocketAddress;
+import java.util.Collections;
 import java.util.UUID;
 
 public class StandaloneCassandraTemplateApplication {
@@ -23,6 +27,8 @@ public class StandaloneCassandraTemplateApplication {
       countBooks(template);
       findInsertedBook(template, insertedBook);
       truncateBooks(template);
+
+      performBatch(template);
     }
   }
 
@@ -64,5 +70,18 @@ public class StandaloneCassandraTemplateApplication {
     template.truncate(Book.class);
 
     countBooks(template);
+  }
+
+  private static void performBatch(CassandraTemplate template) {
+    var writeResult = template.batchOps(BatchType.LOGGED)
+        .insert(new Book(UUID.randomUUID(), "The Mysterious Island", 1875))
+        .insert(new Janitor(UUID.randomUUID(), "Mr. Fantastic", new Responsibility("General cleaning", Collections.emptyList())))
+        .execute();
+
+    if (writeResult.wasApplied()) {
+      logger.info("Batch applied");
+    } else {
+      logger.info("Batch did not apply");
+    }
   }
 }
