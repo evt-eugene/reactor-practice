@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.data.cassandra.core.CassandraTemplate;
 import org.springframework.data.cassandra.core.query.Criteria;
 import org.springframework.data.cassandra.core.query.Query;
+import org.springframework.data.cassandra.core.query.Update;
 
 import java.net.InetSocketAddress;
 import java.util.Collections;
@@ -26,6 +27,7 @@ public class StandaloneCassandraTemplateApplication {
       var insertedBook = insertNewBook(template);
       countBooks(template);
       findInsertedBook(template, insertedBook);
+      updateBooksByCriteria(template, insertedBook);
       truncateBooks(template);
 
       performBatch(template);
@@ -64,6 +66,20 @@ public class StandaloneCassandraTemplateApplication {
     );
 
     logger.info("Found: id=" + foundBook.getId() + ", title=" + foundBook.getTitle());
+  }
+
+  private static void updateBooksByCriteria(CassandraTemplate template, Book book) {
+    boolean applied = template.update(
+        Query.query(Criteria.where("id").is(book.getId())),
+        Update.empty().set("publishing_year", 1950),
+        Book.class
+    );
+
+    if (applied) {
+      logger.info("Update applied");
+    } else {
+      logger.info("Update did not apply");
+    }
   }
 
   private static void truncateBooks(CassandraTemplate template) {
