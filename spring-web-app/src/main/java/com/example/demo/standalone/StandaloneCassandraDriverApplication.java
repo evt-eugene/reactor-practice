@@ -5,6 +5,8 @@ import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
 import com.datastax.oss.driver.api.core.config.OptionsMap;
 import com.datastax.oss.driver.api.core.config.TypedDriverOption;
+import com.datastax.oss.driver.api.core.cql.BatchStatement;
+import com.datastax.oss.driver.api.core.cql.BatchType;
 import com.datastax.oss.driver.api.core.cql.Row;
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
@@ -14,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +34,8 @@ public class StandaloneCassandraDriverApplication {
 
       printCountWithQueryBuilder(cqlSession);
       truncateBooks(cqlSession);
+
+      performBatch(cqlSession);
     }
   }
 
@@ -132,5 +137,27 @@ public class StandaloneCassandraDriverApplication {
     cqlSession.execute(ss);
 
     printCountWithQueryBuilder(cqlSession);
+  }
+
+  private static void performBatch(CqlSession cqlSession) {
+    var booksSs = SimpleStatement.newInstance("INSERT INTO library.books (id, title, publishing_year) VALUES (?, ?, ?)",
+        UUID.randomUUID(), "The Mysterious Island", 1875);
+
+    var janitorsSs = SimpleStatement.newInstance(
+        "INSERT INTO library.janitors (id, description, name, skills, version) VALUES (?, ?, ?, ?, ?)",
+        UUID.randomUUID(), "General cleaning", "Ivan Ibrahimovich", Collections.emptyList(), 1L
+    );
+
+    var batch = BatchStatement.builder(BatchType.LOGGED)
+        .addStatement(booksSs)
+        .addStatement(janitorsSs)
+        .build();
+
+    var rs = cqlSession.execute(batch);
+    if (rs.wasApplied()) {
+      logger.info("Batch applied");
+    } else {
+      logger.info("Batch did not apply");
+    }
   }
 }
