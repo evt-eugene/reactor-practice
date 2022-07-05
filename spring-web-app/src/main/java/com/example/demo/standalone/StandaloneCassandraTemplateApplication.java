@@ -61,7 +61,8 @@ public class StandaloneCassandraTemplateApplication {
   private static void findInsertedBook(CassandraTemplate template, Book book) {
     var foundBook = template.selectOne(
         Query.query(Criteria.where("id").is(book.getId()))
-            .and(Criteria.where("title").is(book.getTitle())),
+            .and(Criteria.where("title").is(book.getTitle()))
+            .limit(1),
         Book.class
     );
 
