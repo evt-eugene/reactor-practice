@@ -105,7 +105,8 @@ public class StandaloneCassandraDriverApplication {
     var ss = QueryBuilder.selectFrom("books")
         .all()
         .whereColumn("id").isEqualTo(QueryBuilder.literal(id))
-        .build();
+        .build()
+        .setPageSize(2000);
 
     var rs = cqlSession.execute(ss);
     if (rs.wasApplied()) {
