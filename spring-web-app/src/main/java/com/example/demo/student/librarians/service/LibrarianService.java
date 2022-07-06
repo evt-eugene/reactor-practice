@@ -11,6 +11,8 @@ public interface LibrarianService {
 
   Flux<Librarian> findAll();
 
+  Mono<Librarian> getLibrarianById(UUID id);
+
   Mono<Librarian> createLibrarian(LibrarianDto dto);
 
   Mono<Void> deleteLibrarian(UUID id);

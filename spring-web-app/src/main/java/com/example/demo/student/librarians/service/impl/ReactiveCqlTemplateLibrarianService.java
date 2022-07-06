@@ -6,6 +6,7 @@ import com.example.demo.student.librarians.entity.Librarian;
 import com.example.demo.student.librarians.service.LibrarianService;
 import com.example.demo.student.librarians.web.LibrarianDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.data.cassandra.core.cql.ReactiveCqlTemplate;
 import org.springframework.data.cassandra.core.cql.RowMapper;
 import org.springframework.stereotype.Service;
@@ -42,11 +43,24 @@ public class ReactiveCqlTemplateLibrarianService implements LibrarianService {
   }
 
   @Override
+  public Mono<Librarian> getLibrarianById(UUID id) {
+    return cqlTemplate.queryForObject(SELECT_ONE_BY_ID, ROW_MAPPER, id);
+  }
+
+  @Override
   public Mono<Librarian> createLibrarian(LibrarianDto dto) {
     return Mono.defer(() -> Mono.just(Uuids.timeBased()))
         .flatMap(id -> cqlTemplate
             .execute(INSERT_ONE, id, dto.getFirstName(), dto.getLastName(), dto.getMiddleName(), dto.getAge())
-            .flatMap(wasApplied -> cqlTemplate.queryForObject(SELECT_ONE_BY_ID, ROW_MAPPER, id)));
+            .flatMap(wasApplied -> getLibrarianByIdWithCustomCreators(id))
+        );
+  }
+
+  private Mono<Librarian> getLibrarianByIdWithCustomCreators(UUID id) {
+    return cqlTemplate.query(session -> session.prepare(SELECT_ONE_BY_ID), ps -> ps.bind().setUuid(0, id), ROW_MAPPER)
+        .buffer(1)
+        .flatMap(list -> Mono.just(DataAccessUtils.requiredSingleResult(list)))
+        .next();
   }
 
   @Override

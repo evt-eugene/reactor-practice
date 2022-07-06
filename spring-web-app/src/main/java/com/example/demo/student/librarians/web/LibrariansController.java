@@ -32,6 +32,12 @@ public class LibrariansController {
     return "librarians.html";
   }
 
+  @GetMapping("/{id}")
+  @ResponseBody
+  public Mono<Librarian> getLibrarianById(@PathVariable("id") UUID id) {
+    return service.getLibrarianById(id);
+  }
+
   @PostMapping
   @ResponseBody
   public Mono<Librarian> addLibrarian(@RequestBody LibrarianDto dto) {
