@@ -6,6 +6,8 @@ services:
     image: cassandra:4.0.4
     ports:
       - "9042:9042"
+    volumes:
+      - ./cassandra_config/cassandra.yaml:/etc/cassandra/cassandra.yaml
     environment:
       CASSANDRA_CLUSTER_NAME: BooksCluster
     healthcheck:
