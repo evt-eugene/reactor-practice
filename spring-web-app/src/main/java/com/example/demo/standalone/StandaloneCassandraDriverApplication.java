@@ -110,6 +110,9 @@ public class StandaloneCassandraDriverApplication {
 
     var rs = cqlSession.execute(ss);
     if (rs.wasApplied()) {
+      logger.info("rs.getAvailableWithoutFetching() : " + rs.getAvailableWithoutFetching());
+      logger.info("rs.isFullyFetched() : " + rs.isFullyFetched());
+
       for (Row row : rs) {
         logger.info("ID: " + row.getUuid("id"));
         logger.info("TITLE: " + row.getString("title"));
