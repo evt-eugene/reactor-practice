@@ -11,6 +11,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
+import static org.springframework.data.cassandra.core.query.Criteria.where;
+import static org.springframework.data.cassandra.core.query.Query.query;
+
 @Repository
 public class ReactiveCassandraTemplateJanitorRepository implements JanitorRepository {
 
@@ -29,6 +32,11 @@ public class ReactiveCassandraTemplateJanitorRepository implements JanitorReposi
   @Override
   public Mono<Janitor> findById(UUID id) {
     return template.selectOneById(id, Janitor.class);
+  }
+
+  @Override
+  public Flux<Janitor> findByCharacteristic(String characteristic) {
+    return template.select(query(where("characteristic").like(characteristic)), Janitor.class);
   }
 
   @Override

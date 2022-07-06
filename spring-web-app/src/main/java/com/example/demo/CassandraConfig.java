@@ -62,7 +62,8 @@ public class CassandraConfig extends AbstractReactiveCassandraConfiguration {
         loadResourceAsString("classpath:cql/3_create_books_title_index.cql", UTF_8),
         loadResourceAsString("classpath:cql/4_create_user_defined_fullname_type.cql", UTF_8),
         loadResourceAsString("classpath:cql/5_create_librarian_table.cql", UTF_8),
-        loadResourceAsString("classpath:cql/6_create_janitors_table.cql", UTF_8)
+        loadResourceAsString("classpath:cql/6_create_janitors_table.cql", UTF_8),
+        loadResourceAsString("classpath:cql/7_create_sasi_janitors_characteristic_index.cql", UTF_8)
     );
   }
 

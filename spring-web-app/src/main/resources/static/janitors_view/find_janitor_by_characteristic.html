@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Delete janitor</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const formEl = document.querySelector('#find_janitor_form');
+        const characteristicInputEl = formEl.querySelector("#keywords");
+        const resultsEl = document.querySelector('#results');
+
+        formEl.addEventListener('submit', e => {
+          e.preventDefault();
+
+          resultsEl.innerText = '';
+
+          const characteristic = characteristicInputEl.value;
+
+          fetch(`/janitors?characteristic=${characteristic}`, {method: 'GET'})
+            .then(resp => {
+              console.log("resp=", resp);
+
+              if (!resp.ok) {
+                throw new Error(resp.statusText);
+              }
+              return resp.json();
+            })
+            .then(json => {
+              resultsEl.innerText = JSON.stringify(json);
+
+              window.setTimeout(() => alert("Success!!"));
+            })
+            .catch(error => {
+              console.error(error);
+
+              window.setTimeout(() => alert("Error!!"));
+            });
+        });
+      });
+
+
+    </script>
+  </head>
+  <body>
+    <section>
+      <h1>Please type characteristic keywords</h1>
+      <form id="find_janitor_form" action="#">
+        <label for="keywords">Characteristic keywords:</label>
+        <input id="keywords" type="text" name="characteristic" required>
+
+        <br>
+
+        <button type="submit">Find</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>Results:</h2>
+      <div id="results"></div>
+    </section>
+  </body>
+</html>

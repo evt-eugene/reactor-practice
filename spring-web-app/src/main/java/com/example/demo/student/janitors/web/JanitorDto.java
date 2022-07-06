@@ -14,9 +14,13 @@ public final class JanitorDto {
   @JsonProperty("responsibility")
   private final ResponsibilityDto responsibilityDto;
 
-  public JanitorDto(String name, ResponsibilityDto responsibilityDto) {
+  @JsonProperty("characteristic")
+  private final String characteristic;
+
+  public JanitorDto(String name, ResponsibilityDto responsibilityDto, String characteristic) {
     this.name = name;
     this.responsibilityDto = responsibilityDto;
+    this.characteristic = characteristic;
   }
 
   public String getName() {
@@ -29,6 +33,10 @@ public final class JanitorDto {
 
   public List<Skill> getSkills() {
     return responsibilityDto.getSkills();
+  }
+
+  public String getCharacteristic() {
+    return characteristic;
   }
 
   public static final class ResponsibilityDto {

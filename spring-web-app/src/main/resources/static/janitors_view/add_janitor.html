@@ -12,6 +12,7 @@
         const nameInputEl = formEl.querySelector("#name");
         const descSelectEl = formEl.querySelector("#responsibility_desc");
         const skillsSelectEl = formEl.querySelector("#responsibility_skills");
+        const characteristicSelectEl = formEl.querySelector("#characteristic");
 
         formEl.addEventListener('submit', e => {
           e.preventDefault();
@@ -19,6 +20,7 @@
           const name = nameInputEl.value;
           const desc = descSelectEl.value;
           const skills = Array.from(skillsSelectEl.selectedOptions).map(option => option.value);
+          const characteristic = characteristicSelectEl.value;
 
           const options = {
             method: 'POST',
@@ -26,7 +28,7 @@
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({name, responsibility: {desc, skills}})
+            body: JSON.stringify({name, responsibility: {desc, skills}, characteristic})
           };
 
           fetch("/janitors", options)
@@ -73,6 +75,13 @@
         <option value="KNOWLEDGE_OF_CLEANING_CHEMICALS_AND_SUPPLIES">Knowledge of cleaning chemicals and supplies</option>
         <option value="ABILITY_TO_HANDLE_HEAVY_EQUIPMENT">Ability to handle heavy equipment</option>
         <option value="ABILITY_TO_WORK_INDEPENDENTLY">Ability to work independently</option>
+      </select>
+
+      <label for="characteristic">Characteristic:</label>
+      <select id="characteristic" name="characteristic" required>
+        <option>Works at nights and likes arguing</option>
+        <option>Likes clean environment, doesn't like to argue.</option>
+        <option>Likes to work at day, likes to play video games being alone</option>
       </select>
 
       <br>

@@ -34,10 +34,15 @@ public class ReactiveCassandraTemplateJanitorService implements JanitorService {
   }
 
   @Override
+  public Flux<Janitor> findByCharacteristic(String characteristic) {
+    return repository.findByCharacteristic(characteristic);
+  }
+
+  @Override
   public Mono<Janitor> createJanitor(JanitorDto dto) {
     return Mono.defer(() -> {
       var responsibility = new Responsibility(dto.getDesc(), dto.getSkills());
-      var janitor = new Janitor(Uuids.timeBased(), dto.getName(), responsibility);
+      var janitor = new Janitor(Uuids.timeBased(), dto.getName(), responsibility, dto.getCharacteristic());
 
       return repository.save(janitor);
     });
@@ -49,6 +54,7 @@ public class ReactiveCassandraTemplateJanitorService implements JanitorService {
         .flatMap(janitor -> {
           janitor.setName(dto.getName());
           janitor.setResponsibility(new Responsibility(dto.getDesc(), dto.getSkills()));
+          janitor.setCharacteristic(dto.getCharacteristic());
 
           return repository.update(janitor);
         });

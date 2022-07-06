@@ -20,6 +20,9 @@ public class Janitor {
   @Embedded.Nullable
   private Responsibility responsibility;
 
+  @Column("characteristic")
+  private String characteristic;
+
   @Version
   @Column("version")
   private long version;
@@ -28,10 +31,11 @@ public class Janitor {
     // JPA
   }
 
-  public Janitor(UUID id, String name, Responsibility responsibility) {
+  public Janitor(UUID id, String name, Responsibility responsibility, String characteristic) {
     this.id = id;
     this.name = name;
     this.responsibility = responsibility;
+    this.characteristic = characteristic;
   }
 
   public UUID getId() {
@@ -52,5 +56,13 @@ public class Janitor {
 
   public void setResponsibility(Responsibility responsibility) {
     this.responsibility = responsibility;
+  }
+
+  public String getCharacteristic() {
+    return characteristic;
+  }
+
+  public void setCharacteristic(String characteristic) {
+    this.characteristic = characteristic;
   }
 }

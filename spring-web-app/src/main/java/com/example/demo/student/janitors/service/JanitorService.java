@@ -13,6 +13,8 @@ public interface JanitorService {
 
   Mono<Janitor> findById(UUID id);
 
+  Flux<Janitor> findByCharacteristic(String characteristic);
+
   Mono<Janitor> createJanitor(JanitorDto dto);
 
   Mono<Janitor> updateJanitor(UUID id, JanitorDto dto);

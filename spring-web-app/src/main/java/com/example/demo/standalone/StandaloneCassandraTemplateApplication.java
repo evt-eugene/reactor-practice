@@ -92,7 +92,7 @@ public class StandaloneCassandraTemplateApplication {
   private static void performBatch(CassandraTemplate template) {
     var writeResult = template.batchOps(BatchType.LOGGED)
         .insert(new Book(UUID.randomUUID(), "The Mysterious Island", 1875))
-        .insert(new Janitor(UUID.randomUUID(), "Mr. Fantastic", new Responsibility("General cleaning", Collections.emptyList())))
+        .insert(new Janitor(UUID.randomUUID(), "Mr. Fantastic", new Responsibility("General cleaning", Collections.emptyList()), "Works at nights"))
         .execute();
 
     if (writeResult.wasApplied()) {

@@ -15,6 +15,8 @@ public interface JanitorRepository extends Repository<Janitor, UUID> {
 
   Mono<Janitor> findById(UUID id);
 
+  Flux<Janitor> findByCharacteristic(String characteristic);
+
   Mono<Janitor> save(Janitor janitor);
 
   Mono<Janitor> update(Janitor janitor);
