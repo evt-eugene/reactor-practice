@@ -1,11 +1,16 @@
 package com.example.demo.student.janitors.entity;
 
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.Embedded;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Table("janitors")
@@ -22,6 +27,22 @@ public class Janitor {
 
   @Column("characteristic")
   private String characteristic;
+
+  @CreatedBy
+  @Column("created_by")
+  private String createdBy;
+
+  @CreatedDate
+  @Column("created_date")
+  private Instant createdDate;
+
+  @LastModifiedBy
+  @Column("last_modified_by")
+  private String lastModifiedBy;
+
+  @LastModifiedDate
+  @Column("last_modified_date")
+  private Instant lastModifiedDate;
 
   @Version
   @Column("version")

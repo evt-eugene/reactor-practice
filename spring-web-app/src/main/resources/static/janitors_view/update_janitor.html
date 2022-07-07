@@ -35,7 +35,10 @@
 
           fetch(`/janitors/${id}`, options)
             .then(resp => {
-              return resp.json();
+               if (!resp.ok) {
+                 throw new Error(resp.statusText);
+               }
+               return resp.json();
             })
             .then(data => {
               console.log(data);

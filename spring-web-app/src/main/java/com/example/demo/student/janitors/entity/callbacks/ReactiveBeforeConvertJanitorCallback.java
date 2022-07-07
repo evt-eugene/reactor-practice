@@ -8,8 +8,8 @@ import org.springframework.data.cassandra.core.mapping.event.ReactiveBeforeConve
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-@Order(1)
 @Component
+@Order(101)
 public class ReactiveBeforeConvertJanitorCallback implements ReactiveBeforeConvertCallback<Janitor> {
 
   @Override
