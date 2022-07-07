@@ -34,8 +34,8 @@ public class LibrariansController {
 
   @GetMapping("/{id}")
   @ResponseBody
-  public Mono<Librarian> getLibrarianById(@PathVariable("id") UUID id) {
-    return service.getLibrarianById(id);
+  public Mono<Librarian> findLibrarianById(@PathVariable("id") UUID id) {
+    return service.findLibrarianById(id);
   }
 
   @PostMapping
