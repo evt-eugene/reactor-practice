@@ -64,7 +64,9 @@ public class CassandraConfig extends AbstractReactiveCassandraConfiguration {
         loadResourceAsString("classpath:cql/5_create_librarian_table.cql", UTF_8),
         loadResourceAsString("classpath:cql/6_create_janitors_table.cql", UTF_8),
         loadResourceAsString("classpath:cql/7_create_sasi_janitors_characteristic_index.cql", UTF_8),
-        loadResourceAsString("classpath:cql/8_create_count_janitor_if_works_with_chemicals_user_defined_function.cql", UTF_8)
+        loadResourceAsString("classpath:cql/8_create_count_janitor_if_works_with_chemicals_function.cql", UTF_8),
+        loadResourceAsString("classpath:cql/9_create_state_count_janitor_if_works_with_chemicals_function.cql", UTF_8),
+        loadResourceAsString("classpath:cql/10_create_total_chemical_janitors_aggregate.cql", UTF_8)
     );
   }
 

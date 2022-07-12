@@ -4,6 +4,7 @@ import com.datastax.oss.driver.api.core.uuid.Uuids;
 import com.example.demo.student.janitors.entity.Janitor;
 import com.example.demo.student.janitors.entity.Responsibility;
 import com.example.demo.student.janitors.entity.projections.JanitorChemicalView;
+import com.example.demo.student.janitors.entity.projections.TotalJanitorChemicalView;
 import com.example.demo.student.janitors.persistance.JanitorRepository;
 import com.example.demo.student.janitors.service.JanitorService;
 import com.example.demo.student.janitors.web.JanitorDto;
@@ -32,6 +33,10 @@ public class ReactiveCassandraTemplateJanitorService implements JanitorService {
   @Override
   public Flux<JanitorChemicalView> findAllChemicalViews() {
     return repository.findAllChemicalViews();
+  }
+
+  public Mono<TotalJanitorChemicalView> getTotalChemicalView() {
+    return repository.getTotalChemicalView();
   }
 
   @Override

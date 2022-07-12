@@ -3,6 +3,7 @@ package com.example.demo.student.janitors.persistance.impl;
 import com.datastax.oss.driver.api.core.ConsistencyLevel;
 import com.example.demo.student.janitors.entity.Janitor;
 import com.example.demo.student.janitors.entity.projections.JanitorChemicalView;
+import com.example.demo.student.janitors.entity.projections.TotalJanitorChemicalView;
 import com.example.demo.student.janitors.persistance.JanitorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.cassandra.core.*;
@@ -23,6 +24,11 @@ public class ReactiveCassandraTemplateJanitorRepository implements JanitorReposi
         FROM library.janitors
       """;
 
+  private static final String SELECT_TOTAL_JANITOR_CHEMICAL_VIEWS = """
+        SELECT total_chemical_janitors(skills) as total
+        FROM library.janitors
+      """;
+
   private final ReactiveCassandraTemplate template;
 
   @Autowired
@@ -38,6 +44,11 @@ public class ReactiveCassandraTemplateJanitorRepository implements JanitorReposi
   @Override
   public Flux<JanitorChemicalView> findAllChemicalViews() {
     return template.select(SELECT_JANITOR_CHEMICAL_VIEWS, JanitorChemicalView.class);
+  }
+
+  @Override
+  public Mono<TotalJanitorChemicalView> getTotalChemicalView() {
+    return template.selectOne(SELECT_TOTAL_JANITOR_CHEMICAL_VIEWS, TotalJanitorChemicalView.class);
   }
 
   @Override

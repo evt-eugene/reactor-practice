@@ -2,6 +2,7 @@ package com.example.demo.student.janitors.web;
 
 import com.example.demo.student.janitors.entity.Janitor;
 import com.example.demo.student.janitors.entity.projections.JanitorChemicalView;
+import com.example.demo.student.janitors.entity.projections.TotalJanitorChemicalView;
 import com.example.demo.student.janitors.service.JanitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,11 @@ public class JanitorsController {
   @GetMapping(params = "as_chemical_view=true")
   public Flux<JanitorChemicalView> findAllChemicalViews() {
     return service.findAllChemicalViews();
+  }
+
+  @GetMapping(params = "as_total_chemical_view=true")
+  public Mono<TotalJanitorChemicalView> getTotalChemicalView() {
+    return service.getTotalChemicalView();
   }
 
   @GetMapping(params = "characteristic")
