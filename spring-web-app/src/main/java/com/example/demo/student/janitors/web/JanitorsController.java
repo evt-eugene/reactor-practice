@@ -1,6 +1,7 @@
 package com.example.demo.student.janitors.web;
 
 import com.example.demo.student.janitors.entity.Janitor;
+import com.example.demo.student.janitors.entity.projections.JanitorChemicalView;
 import com.example.demo.student.janitors.service.JanitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.http.ResponseEntity.*;
@@ -36,6 +36,11 @@ public class JanitorsController {
     return service.findById(id)
         .map(ResponseEntity::ok)
         .defaultIfEmpty(notFound().build());
+  }
+
+  @GetMapping(params = "as_chemical_view=true")
+  public Flux<JanitorChemicalView> findAllChemicalViews() {
+    return service.findAllChemicalViews();
   }
 
   @GetMapping(params = "characteristic")
