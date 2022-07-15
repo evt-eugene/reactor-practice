@@ -7,9 +7,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./spring-web-app
     steps:
       - name: Check Out Repo 
         uses: actions/checkout@v2
