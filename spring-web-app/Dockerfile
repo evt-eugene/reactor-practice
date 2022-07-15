@@ -1,7 +1,6 @@
 # syntax=docker/dockerfile:1
 
 FROM openjdk:17-alpine3.13 as base
-
 WORKDIR /app
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
