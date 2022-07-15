@@ -23,6 +23,9 @@ jobs:
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
+        
+      - name: Copy sources from spring-web-app to the base directory because GitHub Actions do not support per-directory mode
+        run: cp -lR ./spring-web-app .        
           
       - name: Build and push
         id: docker_build
